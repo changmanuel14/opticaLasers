@@ -1,0 +1,417 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Recetas</h1>
+    <div class="container">
+        <ul class="nav nav-tabs">
+          <li><a data-toggle="tab" href="#home" class="panelb">Receta</a></li>
+          <li><a data-toggle="tab" href="#menu1" class="panelb">Lente de Contacto</a></li>
+          <li><a data-toggle="tab" href="#menu2" class="panelb">Gotas</a></li>
+        </ul>
+        <form action="" method="POST">
+
+        <div class="tab-content">
+          <div id="home" class="tab-pane fade in active" style="padding-left: 5%;">
+            <br>
+            <button type="button" class="button" onclick="PdfDownload('Receta General')">Imprimir Receta</button>
+            <br>
+            <br>
+            <br>
+            <div id="tblinfo1">
+            <div style="width: 40%; float: left; position: relative;">
+                <center><img src="..\static\logolasers.png" style="width: 100%;"> </center>
+            </div>
+            <div class="derecha">
+                <table>
+                    <tr>
+                        <th class="letragrande"><center>Telefonos:<br>7842-2189 7761-6821</center></th>
+                    </tr>
+                    <tr>
+                        <th class="letragrande">Fecha: {{dataconsulta[0][4]}}</th>
+                    </tr>
+                </table> 
+            </div>
+            <div class="izquierda">
+            <table>
+                <tr>
+                    <th class="letragrande" style="background-color: #0000FF; color: white;">Nombre:</th>
+                    <td class="letragrande">{{dataconsulta[0][0]}} {{dataconsulta[0][1]}} {{dataconsulta[0][2]}} {{dataconsulta[0][3]}}</td>
+                </tr>
+            </table><br>
+                <center>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="letragrande" style="background-color: #0000FF; color: white;">RX</th>
+                                <th class="letragrande" style="background-color: #0000FF; color: white;">Esfera</th>
+                                <th class="letragrande" style="background-color: #0000FF; color: white;">Cilindro</th>
+                                <th class="letragrande" style="background-color: #0000FF; color: white;">Eje</th>
+                                <th class="letragrande" style="background-color: #0000FF; color: white;">Prisma</th>
+                                <th class="letragrande" style="background-color: #0000FF; color: white;">Lente Recomendado</th>
+                            </tr>
+                        </thead>
+                            <tr>
+                                <th class="letragrande" style="background-color: #0000FF; color: white;">OD</th>
+                                <td class="letragrande" id="esod"></td>
+                                <td class="letragrande"  id="ciod"></td>
+                                <td class="letragrande" id="ejod"></td>
+                                <td class="letragrande" id="prod"></td>
+                                <td rowspan="3" class="letragrande">Tipo: {{lenterecomendado[0][0]}}<br>Material: {{lenterecomendado[0][1]}}<br>Filtro: {{lenterecomendado[0][2]}}<br>Color: {{lenterecomendado[0][3]}}<br>Tallado: {{lenterecomendado[0][4]}}</td>
+                            </tr>
+                            <tr>
+                                <th class="letragrande" style="background-color: #0000FF; color: white;">OI</th>
+                                <td class="letragrande" id="esoi"></td>
+                                <td class="letragrande" id="cioi"></td>
+                                <td class="letragrande" id="ejoi"></td>
+                                <td class="letragrande" id="proi"></td>
+                            </tr>
+                            <tr>
+                                <th class="letragrande" style="background-color: #0000FF; color: white;">DNP</th>
+                                <td class="letragrande">{{dataconsulta[0][7]}}</td>
+                                <th class="letragrande" style="background-color: #0000FF; color: white;">ADD</th>
+                                <td class="letragrande" id="add">{{dataconsulta[0][8]}}</td>
+                                <td class="letragrande"></td>
+                            </tr>
+                    </table>
+                    <table>
+                            <tr>
+                                <th colspan="2" style="padding-top: 1.5%; padding-bottom: 1.5%;" class="letragrande" >Lente Oftalmico. Uso: {{dataconsulta[0][5]}}  <br></th>
+                            </tr>
+                            <tr>
+                                <th class="letragrande" style="width: 30%; background-color: #0000FF; color: white;">Proxima evaluacion</th>
+                                <th rowspan="2" class="letragrande"><br><br><br></th>
+                            </tr>
+                            <tr>
+                                <th class="letragrande" style="color: red;">{{dataconsulta[0][6]}}</th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <th colspan="5" class="letragrande">Lic Kevin Avendaño</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </center>
+            </div>  
+            </div>
+            <h6 style=" font-size: x-large; float: center; position: relative;">1 calle 12-10 Zona 3 Quetzaltenango</h6>
+          </div>
+          <div id="menu1" class="tab-pane fade" style="padding-left: 5%;">
+            <br>
+            <button type="button" class="button" onclick="PdfDownload2('Receta Lentes de Contacto')">Imprimir Receta</button>
+            <button onclick="submit" class="button">Aceptar</button>
+            <br>
+            <br>
+            <br>
+            <div id="tblinfo2" class="tblinfo2">
+                <div style="width: 40%; float: left; position: relative;">
+                    <center><img src="..\static\logolasers.png" style="width: 80%;"> </center>
+                </div>
+                <div class="derecha">
+                    <table>
+                        <tr>
+                            <th class="letragrande1"><center>Telefonos:<br>7842-2189 7761-6821</center></th>
+                        </tr>
+                        <tr>
+                            <th class="letragrande1">Fecha: {{dataconsulta[0][4]}}</th>
+                        </tr>
+                    </table> 
+                </div>
+                <center>
+                <table style="width: 80%;">
+                    <tr style="border: white;">
+                        <th class="letragrande1"  style="background-color: #0000FF; color: white;">Nombre: </th>
+                        <td class="letragrande1">{{dataconsulta[0][0]}} {{dataconsulta[0][1]}} {{dataconsulta[0][2]}} {{dataconsulta[0][3]}}</td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th class="letragrande1" style="background-color: #0000FF; color: white;">OD</th>
+                        <th class="letragrande1" style="background-color: #0000FF; color: white;">OI</th>
+                    </tr>
+                    <tr>
+                        <th class="letragrande1" style="background-color: #0000FF; color: white;">PODER</th>
+                        <th><input type="text" class="inputtextrecetas" id="lcpoderod" name="lcpoderod" value="{{lencons[0][1]}}"></th>
+                        <th><input type="text" class="inputtextrecetas" id="lcpoderoi" name="lcpoderoi" value="{{lencons[1][1]}}"></th>
+                    </tr>
+                    <tr>
+                        <th class="letragrande1" style="background-color: #0000FF; color: white;">CB</th>
+                        <th><input type="text" class="inputtextrecetas" id="lccbod" name="lccbod" value="{{lencons[0][2]}}"></th>
+                        <th><input type="text" class="inputtextrecetas" id="lccboi" name="lccboi" value="{{lencons[1][2]}}"></th>
+                    </tr>
+                    <tr>
+                        <th class="letragrande1" style="background-color: #0000FF; color: white;">DIA</th>
+                        <th><input type="text" class="inputtextrecetas" id="lcdiaod" name="lcdiaod" value="{{lencons[0][3]}}"></th>
+                        <th><input type="text" class="inputtextrecetas" id="lcdiaoi" name="lcdiaoi" value="{{lencons[1][3]}}"></th>
+                    </tr>
+                    <tr>
+                        <th class="letragrande1" style="background-color: #0000FF; color: white;">CIL</th>
+                        <th><input type="text" class="inputtextrecetas" id="lccilod" name="lccilod" value="{{lencons[0][4]}}"></th>
+                        <th><input type="text" class="inputtextrecetas" id="lcciloi" name="lcciloi" value="{{lencons[1][4]}}"></th>
+                    </tr>
+                    <tr>
+                        <th class="letragrande1" style="background-color: #0000FF; color: white;">EJE</th>
+                        <th><input type="text" class="inputtextrecetas" id="lcejeod" name="lcejeod" value="{{lencons[0][5]}}"></th>
+                        <th><input type="text" class="inputtextrecetas" id="lcejeoi" name="lcejeoi" value="{{lencons[1][5]}}"></th>
+                    </tr>
+                    <tr>
+                        <th class="letragrande1" style="background-color: #0000FF; color: white;">AGREGAR</th>
+                        <th><input type="text" class="inputtextrecetas" id="lcagregarod" name="lcagregarod" value="{{lencons[0][6]}}"></th>
+                        <th><input type="text" class="inputtextrecetas" id="lcagregaroi" name="lcagregaroi" value="{{lencons[1][6]}}"></th>
+                    </tr>
+                    <tr>
+                        <th class="letragrande1" style="background-color: #0000FF; color: white;">COLOR</th>
+                        <th><input type="text" class="inputtextrecetas" id="lccolorod" name="lccolorod" value="{{lencons[0][7]}}"></th>
+                        <th><input type="text" class="inputtextrecetas" id="lccoloroi" name="lccoloroi" value="{{lencons[1][7]}}"></th>
+                    </tr>
+                    <tr>
+                        <th class="letragrande1" style="background-color: #0000FF; color: white;">TIPO</th>
+                        <th><input type="text" class="inputtextrecetas" id="lctipood" name="lctipood" value="{{lencons[0][8]}}"></th>
+                        <th><input type="text" class="inputtextrecetas" id="lctipooi" name="lctipooi" value="{{lencons[1][8]}}"></th>
+                    </tr>
+                    <tr style="border: white;">
+                        <th class="letragrande1"  style="background-color: #0000FF; color: white;">Fecha Caducidad: </th>
+                        <td colspan="2" class="letragrande1"><input type="text" class="inputtextrecetas" onblur="cambiarfechaob()" onfocus="cambiarfechaof()" id="lcfechacad" name="lcfechacad" value="{{lencons[0][0]}}"></td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p>___________________________________________________</p>
+                <h4>Lic. Kevin Avendaño</h4>
+            </center>
+            </div>
+          </div>
+          <div id="menu2" class="tab-pane fade" style="padding-left: 5%;">
+            <br>
+            <button type="button" class="button" onclick="PdfDownload3('Receta Gotero')">Imprimir Receta</button>
+            <button onclick="submit" class="button">Aceptar</button>
+            <br>
+            <br>
+            <br>
+            <center>
+                <form action="" method="POST">
+            <div id="tblinfo3" style="width: 80%;">
+                <div style="width: 40%; float: left; position: relative;">
+                    <center><img src="..\static\logolasers.png" style="width: 100%;"> </center>
+                </div>
+                <div class="derecha">
+                    <table>
+                        <tr>
+                            <th class="letragrande1"><center>Telefonos:<br>7842-2189 7761-6821</center></th>
+                        </tr>
+                        <tr>
+                            <th class="letragrande1">Fecha: {{dataconsulta[0][4]}}</th>
+                        </tr>
+                    </table> 
+                </div>
+                <center>
+                <table>
+                    <tr style="border: white;">
+                        <th class="letragrande1"  style="background-color: #0000FF; color: white;">Nombre: </th>
+                        <td class="letragrande1">{{dataconsulta[0][0]}} {{dataconsulta[0][1]}} {{dataconsulta[0][2]}} {{dataconsulta[0][3]}}</td>
+                    </tr>
+                    <tr style="border: white;">
+                        <th class="letragrande1"  style="background-color: #0000FF; color: white;">Fecha Proxima Cita: </th>
+                        <td class="letragrande1"><input type="text" class="inputtextrecetas" onblur="cambiarfechaob1()" onfocus="cambiarfechaof1()" id="gfechacad" name="gfechacad" value="{{dataconsulta[0][6]}}"></td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <table>
+                    <tr>
+                        <td><input type="text" class="inputtextrecetas1" id="gmed1" name="gmed1" value="{{datagotero[0]}}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea id="gdesc1" name="gdesc1" rows="2" cols="65" style="font-size: 25px;">{{datagotero[1]}}</textarea>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                    <table>
+                    <tr>
+                        <td><input type="text" class="inputtextrecetas1" id="gmed2" name="gmed2" value="{{datagotero[2]}}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea id="gdesc2" name="gdesc2" rows="2" cols="65" style="font-size: 25px;">{{datagotero[3]}}</textarea>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p>___________________________________________________</p>
+                <h4>Lic. Kevin Avendaño</h4>
+                </center>
+                
+                
+            </div>
+        </center>
+      </div>
+      <script type="text/javascript">
+      function cambiarfechaob1(){
+        var fechatext = document.getElementById('gfechacad')
+        var data = fechatext.value
+        data = String(data)
+        var arreglo = data.split('-')
+        fechatext.type = 'text'
+        fechatext.value = arreglo[2] + "/" + arreglo[1] + "/" + arreglo[0]
+      }
+      function cambiarfechaof1(){
+        var fechatext = document.getElementById('gfechacad')
+        var data = fechatext.value
+        data = String(data)
+        var arreglo = data.split('/')
+        fechatext.type = 'date'
+        var aux = arreglo[2] + "-" + arreglo[1] + "-" + arreglo[0]
+        fechatext.value = aux
+      }
+      function cambiarfechaob(){
+        var fechatext = document.getElementById('lcfechacad')
+        var data = fechatext.value
+        data = String(data)
+        var arreglo = data.split('-')
+        fechatext.type = 'text'
+        fechatext.value = arreglo[2] + "/" + arreglo[1] + "/" + arreglo[0]
+      }
+      function cambiarfechaof(){
+        var fechatext = document.getElementById('lcfechacad')
+        var data = fechatext.value
+        data = String(data)
+        var arreglo = data.split('/')
+        fechatext.type = 'date'
+        var aux = arreglo[2] + "-" + arreglo[1] + "-" + arreglo[0]
+        fechatext.value = aux
+      }
+        window.onload = function llenardata() {
+            var reffin = {{ rf|tojson }};
+            var esfera1 = document.getElementById('esod')
+            var esfera2 = document.getElementById('esoi')
+            var cilindro1 = document.getElementById('ciod')
+            var cilindro2 = document.getElementById('cioi')
+            var eje1 = document.getElementById('ejod')
+            var eje2 = document.getElementById('ejoi')
+            var prisma1 = document.getElementById('prod')
+            var prisma2 = document.getElementById('proi')
+            var aux = reffin[0][0]
+            aux = parseFloat(aux).toFixed(2)
+            if(aux > 0){
+                aux = '+' + String(aux)
+            }else aux = String(aux)
+            esfera1.innerHTML = aux
+
+            aux = reffin[1][0]
+            aux = parseFloat(aux).toFixed(2)
+            if(aux > 0){
+                aux = '+' + String(aux)
+            }else aux = String(aux)
+            esfera2.innerHTML = aux
+            aux = reffin[0][1]
+            aux = parseFloat(aux).toFixed(2)
+            if(aux > 0){
+                aux = '+' + String(aux)
+            }else aux = String(aux)
+            cilindro1.innerHTML = aux
+            aux = reffin[1][1]
+            aux = parseFloat(aux).toFixed(2)
+            if(aux > 0){
+                aux = '+' + String(aux)
+            }else aux = String(aux)
+            cilindro2.innerHTML = aux
+            aux = reffin[0][2]
+            aux = parseFloat(aux).toFixed()
+            aux = String(aux)
+            eje1.innerHTML = aux
+            aux = reffin[1][2]
+            aux = parseFloat(aux).toFixed()
+            aux = String(aux)
+            eje2.innerHTML = aux
+            aux = reffin[0][3]
+            aux = parseFloat(aux).toFixed(2)
+            if(aux > 0){
+                aux = '+' + String(aux)
+            }else aux = String(aux)
+            prisma1.innerHTML = aux
+            aux = reffin[1][3]
+            aux = parseFloat(aux).toFixed(2)
+            if(aux > 0){
+                aux = '+' + String(aux)
+            }else aux = String(aux)
+            prisma2.innerHTML = aux
+        }
+        function PdfDownload(filename){
+            kendo.pdf.defineFont({
+                "FontAwesome":
+                "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/fonts/fontawesome-webfont.ttf"
+            })
+            kendo.drawing.drawDOM($("#tblinfo1"))
+            .then(function(group){
+                return kendo.drawing.exportPDF(
+                    group,{
+                        paperSize: "auto",
+                        landscape: false,
+                        margin: "2cm",
+                        multiPage: true,
+                    });
+            })
+            .then(function(data){
+                kendo.saveAs({
+                    dataURI: data,
+                    fileName:filename
+                });
+            });
+        }
+        function PdfDownload2(filename){
+            kendo.pdf.defineFont({
+                "FontAwesome":
+                "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/fonts/fontawesome-webfont.ttf"
+            })
+            kendo.drawing.drawDOM($("#tblinfo2"))
+            .then(function(group){
+                return kendo.drawing.exportPDF(
+                    group,{
+                        paperSize: "auto",
+                        landscape: false,
+                        margin: "2cm",
+                        multiPage: true,
+                    });
+            })
+            .then(function(data){
+                kendo.saveAs({
+                    dataURI: data,
+                    fileName:filename
+                });
+            });
+        }
+        function PdfDownload3(filename){
+            kendo.pdf.defineFont({
+                "FontAwesome":
+                "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/fonts/fontawesome-webfont.ttf"
+            })
+            kendo.drawing.drawDOM($("#tblinfo3"))
+            .then(function(group){
+                return kendo.drawing.exportPDF(
+                    group,{
+                        paperSize: "auto",
+                        landscape: false,
+                        margin: "2cm",
+                        multiPage: true,
+                    });
+            })
+            .then(function(data){
+                kendo.saveAs({
+                    dataURI: data,
+                    fileName:filename
+                });
+            });
+        }
+    </script>
+{% endblock %}
