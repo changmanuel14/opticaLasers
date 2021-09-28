@@ -12,7 +12,7 @@
         {% if i != (conteo-1) %}
           <div id="menu{{i}}" class="tab-pane fade" style="padding-left: 5%;">
             <br>
-            <button type="button" class="button"><a href="/recetas/{{listconsultas[i][0]}}">Ver recetas</a></button>
+            <button type="button" class="button"><a href="/recetas/{{listconsultas[i][0]}}" style="color: white;">Ver recetas</a></button>
             <h3>Datos de Paciente</h3>
             <center>
                 <input type="number" id="cui" name="cui" class="inputtext" tabindex="4" placeholder="  CUI" maxlength="13" minlength="0" disabled value="{{ingresconsultas[i][2][8]}}">&nbsp;&nbsp;&nbsp;
@@ -1574,7 +1574,7 @@
         </div>
         {% else %}
         <div id="menu{{i}}" class="tab-pane fade" style="padding-left: 5%;">
-            <button type="button" class="button"><a href="/recetas/{{listconsultas[i][0]}}">Ver recetas</a></button>
+            <button type="button" class="button"><a href="/recetas/{{listconsultas[i][0]}}" style="color: white;">Ver recetas</a></button>
             <br>
             <h3>Datos de Paciente</h3>
             <center>

@@ -12,7 +12,7 @@
         <div class="tab-content">
           <div id="home" class="tab-pane fade in active" style="padding-left: 5%;">
             <br>
-            <button type="button" class="button" onclick="PdfDownload('Receta General')">Imprimir Receta</button>
+            <button type="button" class="button"><a href="/recetalentespdf/{{idconsulta}}" target="_blank" style="color: white;">Imprimir Receta - PDF</a></button>
             <br>
             <br>
             <br>
@@ -89,14 +89,19 @@
                             </tr>
                         </thead>
                     </table>
+                    <h6 style=" font-size: x-large; float: center; position: relative;">1 calle 12-10 Zona 3 Quetzaltenango</h6>
                 </center>
             </div>  
             </div>
+<<<<<<< HEAD
             <h6 style=" font-size: x-large; float: center; position: relative; display: none;">1 calle 12-10 Zona 3 Quetzaltenango</h6>
+=======
+            
+>>>>>>> 9d92c144cb24b5c024ae0f2e99903b525af2f2aa
           </div>
           <div id="menu1" class="tab-pane fade" style="padding-left: 5%;">
             <br>
-            <button type="button" class="button" onclick="PdfDownload2('Receta Lentes de Contacto')">Imprimir Receta</button>
+            <button type="button" class="button"><a href="/recetacontactopdf/{{idconsulta}}" target="_blank" style="color: white;">Imprimir Receta - PDF</a></button>
             <button onclick="submit" class="button">Aceptar</button>
             <br>
             <br>
@@ -187,7 +192,7 @@
           </div>
           <div id="menu2" class="tab-pane fade" style="padding-left: 5%;">
             <br>
-            <button type="button" class="button" onclick="PdfDownload3('Receta Gotero')">Imprimir Receta</button>
+            <button type="button" class="button"><a href="/recetagotaspdf/{{idconsulta}}" target="_blank" style="color: white;">Imprimir Receta - PDF</a></button>
             <button onclick="submit" class="button">Aceptar</button>
             <br>
             <br>
@@ -238,11 +243,11 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <textarea id="gdesc2" name="gdesc2" rows="2" cols="65" style="font-size: 25px;">{{datagotero[3]}}</textarea>
+                            <textarea id="gdesc2" name="gdesc2" rows="2" cols="65" style="font-size: 25px;"></textarea>{{datagotero[3]}}</textarea>
                         </td>
                     </tr>
                 </table>
-            </form>
+                </form>
                 <br>
                 <br>
                 <br>
@@ -251,10 +256,9 @@
                 <p>___________________________________________________</p>
                 <h4>Lic. Kevin Avendaño</h4>
                 </center>
-                
-                
             </div>
         </center>
+        </div>
       </div>
       <script type="text/javascript">
       function cambiarfechaob1(){
@@ -291,7 +295,7 @@
         var aux = arreglo[2] + "-" + arreglo[1] + "-" + arreglo[0]
         fechatext.value = aux
       }
-        window.onload = function llenardata() {
+      window.onload = function llenardata() {
             var reffin = {{ rf|tojson }};
             var esfera1 = document.getElementById('esod')
             var esfera2 = document.getElementById('esoi')
@@ -302,18 +306,25 @@
             var prisma1 = document.getElementById('prod')
             var prisma2 = document.getElementById('proi')
             var aux = reffin[0][0]
-            aux = parseFloat(aux).toFixed(2)
-            if(aux > 0){
-                aux = '+' + String(aux)
-            }else aux = String(aux)
-            esfera1.innerHTML = aux
-
+            if (aux == 'N' || aux == 'n') {
+                esfera1.innerHTML = aux
+            }else {
+                aux = parseFloat(aux).toFixed(2)
+                if(aux > 0){
+                    aux = '+' + String(aux)
+                }else aux = String(aux)
+                esfera1.innerHTML = aux
+            }
             aux = reffin[1][0]
-            aux = parseFloat(aux).toFixed(2)
-            if(aux > 0){
-                aux = '+' + String(aux)
-            }else aux = String(aux)
-            esfera2.innerHTML = aux
+            if (aux == 'N' || aux == 'n') {
+                esfera2.innerHTML = aux
+            }else {
+                aux = parseFloat(aux).toFixed(2)
+                if(aux > 0){
+                    aux = '+' + String(aux)
+                }else aux = String(aux)
+                esfera2.innerHTML = aux
+            }
             aux = reffin[0][1]
             aux = parseFloat(aux).toFixed(2)
             if(aux > 0){
@@ -346,72 +357,6 @@
                 aux = '+' + String(aux)
             }else aux = String(aux)
             prisma2.innerHTML = aux
-        }
-        function PdfDownload(filename){
-            kendo.pdf.defineFont({
-                "FontAwesome":
-                "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/fonts/fontawesome-webfont.ttf"
-            })
-            kendo.drawing.drawDOM($("#tblinfo1"))
-            .then(function(group){
-                return kendo.drawing.exportPDF(
-                    group,{
-                        paperSize: "auto",
-                        landscape: false,
-                        margin: "2cm",
-                        multiPage: true,
-                    });
-            })
-            .then(function(data){
-                kendo.saveAs({
-                    dataURI: data,
-                    fileName:filename
-                });
-            });
-        }
-        function PdfDownload2(filename){
-            kendo.pdf.defineFont({
-                "FontAwesome":
-                "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/fonts/fontawesome-webfont.ttf"
-            })
-            kendo.drawing.drawDOM($("#tblinfo2"))
-            .then(function(group){
-                return kendo.drawing.exportPDF(
-                    group,{
-                        paperSize: "auto",
-                        landscape: false,
-                        margin: "2cm",
-                        multiPage: true,
-                    });
-            })
-            .then(function(data){
-                kendo.saveAs({
-                    dataURI: data,
-                    fileName:filename
-                });
-            });
-        }
-        function PdfDownload3(filename){
-            kendo.pdf.defineFont({
-                "FontAwesome":
-                "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/fonts/fontawesome-webfont.ttf"
-            })
-            kendo.drawing.drawDOM($("#tblinfo3"))
-            .then(function(group){
-                return kendo.drawing.exportPDF(
-                    group,{
-                        paperSize: "auto",
-                        landscape: false,
-                        margin: "2cm",
-                        multiPage: true,
-                    });
-            })
-            .then(function(data){
-                kendo.saveAs({
-                    dataURI: data,
-                    fileName:filename
-                });
-            });
         }
     </script>
 {% endblock %}
