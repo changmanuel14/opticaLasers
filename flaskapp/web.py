@@ -374,11 +374,17 @@ def aprobados():
 					cursor.execute(cons)
 					data = cursor.fetchall()
 					fechas.append(data[0][0])
+				idrecetas = []
+				for i in consultas:
+					cons = "Select max(idconsulta) from consulta where idpaciente = '"+str(i[0])+"';"
+					cursor.execute(cons)
+					data = cursor.fetchall()
+					idrecetas.append(data[0][0])
 		finally:
 			conexion.close()
 	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
 		print("Ocurrió un error al conectar: ", e)
-	return render_template('aprobados.html', title='Aprobados', logeado=logeado, consultas=consultas, fechas=fechas, conteo=conteo)
+	return render_template('aprobados.html', title='Aprobados', logeado=logeado, consultas=consultas, fechas=fechas, conteo=conteo, idrecetas=idrecetas)
 
 @app.route("/recetas/<idconsulta>", methods=['GET', 'POST'])
 def recetas(idconsulta):
