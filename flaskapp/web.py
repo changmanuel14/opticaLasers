@@ -1473,8 +1473,6 @@ def ver(idpaciente):
 
 	ingresconsultas = []
 	contaux = 0
-	print(haynew)
-	print(conteo)
 	for i in listconsultas:
 		print('Datos:', i)
 		ingreconsulta = []
@@ -1502,9 +1500,7 @@ def ver(idpaciente):
 					paciente = cursor.fetchall()
 					paciente = paciente[0]
 					ingreconsulta.append(paciente)
-					print(contaux)
 					if (contaux != conteo - 1) or ((contaux == conteo - 1) and (haynew == 0)):
-						print("entró")
 						consulta = "SELECT oftalmologicos, familiares, glaucoma, alergicas, idantecedentes from antecedentes where idpaciente = %s;"
 						cursor.execute(consulta, idpaciente)
 						antecedentes = cursor.fetchone()
@@ -1619,6 +1615,7 @@ def ver(idpaciente):
 			print("Ocurrió un error al conectar: ", e)
 		contaux = contaux + 1
 	if request.method == 'POST':
+		print('entró')
 		#panel2
 		motivoconsulta = request.form["motivoconsulta"]
 		if len(motivoconsulta) < 1:
@@ -1897,6 +1894,7 @@ def ver(idpaciente):
 		rfe3od = request.form["rfe3od"]
 		if len(rfe1od) < 1:
 			rfe1od = 0
+		print(rfe1od)
 		if len(rfe2od) < 1:
 			rfe2od = 0
 		if len(rfe3od) < 1:
@@ -1933,6 +1931,7 @@ def ver(idpaciente):
 		rfp3od = request.form["rfp3od"]
 		if len(rfp1od) < 1:
 			rfp1od = 0
+		
 		if len(rfp2od) < 1:
 			rfp2od = 0
 		if len(rfp3od) < 1:
@@ -1949,8 +1948,8 @@ def ver(idpaciente):
 		rfe1oi = request.form["rfe1oi"]
 		rfe2oi = request.form["rfe2oi"]
 		rfe3oi = request.form["rfe3oi"]
-		if len(rfe3oi) < 1:
-			rfe3oi = 0
+		if len(rfe1oi) < 1:
+			rfe1oi = 0
 		if len(rfe2oi) < 1:
 			rfe2oi = 0
 		if len(rfe3oi) < 1:
