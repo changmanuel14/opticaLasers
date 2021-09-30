@@ -4,8 +4,6 @@ from datetime import date, timedelta, datetime
 import urllib.request
 import pdfkit
 
-from werkzeug.utils import send_file
-
 app = Flask(__name__)
 app.secret_key = 'd589d3d0d15d764ed0a98ff5a37af547'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -238,7 +236,7 @@ def nuevaconsulta():
 		profesion = request.form["profesion"]
 		direccion = request.form["direccion"]
 		rutafoto = request.form["rutafoto"]
-		aux = r'C:\Users\\DELL\\Documents\\sistemaoptica\\flaskapp\\static\\fotografias\\' + str(nombre1) + str(nombre2) + str(apellido1) + str(apellido2) + str(cui) + str(fechafoto) +'.jpeg'
+		aux = r'C:\\Users\\INTEL\\Documents\\OpticaLasers\\opticaLasers\\flaskapp\\static\\fotografias\\' + str(nombre1) + str(nombre2) + str(apellido1) + str(apellido2) + str(cui) + str(fechafoto) +'.jpeg'
 		urllib.request.urlretrieve(rutafoto, aux)
 		#ingreso paciente y estudiante
 		try:
@@ -547,8 +545,8 @@ def recetas(idconsulta):
 		return redirect(url_for('recetas', idconsulta=idconsulta))
 	return render_template('recetas.html', title='Recetas', logeado=logeado, dataconsulta=dataconsulta, rf = rf, lenterecomendado=lenterecomendado, lencons=lencons, datagotero=datagotero, idconsulta=idconsulta)
 
-@app.route("/pendaprobarc/<idconsulta>", methods=['GET', 'POST'])
-def pendaprobarc(idconsulta):
+@app.route("/editarconsulta/<idconsulta>", methods=['GET', 'POST'])
+def editarconsulta(idconsulta):
 	try:
 		logeado = session['logeado1']
 	except:
@@ -569,7 +567,6 @@ def pendaprobarc(idconsulta):
 	dateac = date.today()
 	year = dateac.strftime("%Y")
 	year = int(year)
-	new_date = dateac + timedelta(days=183)
 	nervos = []
 	nervo = 1
 	for i in range(11):
@@ -594,17 +591,15 @@ def pendaprobarc(idconsulta):
 		cincos.append(cinco)
 		cinco = cinco + 5
 	meses = [[1, "Enero"],[2, "Febrero"],[3, "Marzo"],[4, "Abril"],[5, "Mayo"],[6, "Junio"],[7, "Julio"],[8, "Agosto"],[9, "Septiembre"],[10, "Octubre"],[11, "Noviembre"],[12, "Diciembre"]]
-	enfermedades = [['Diabetes Mellitus'],['Hipertensión Arterial'],['Artritis Reumatoidea'],['Virus Inmunodeficiencia Humana'],['Hipertrigliceridemia'],['Colesterolemia']]
+	enfermedades = [['Diabetes Mellitus'],['Hipertensión Arterial'],['Artritis Reumatoidea'],['Virus Inmunodeficiencia Humana']]
 	try:
 		conexion = pymysql.connect(host='localhost', user='root', password='database', db='opticadb')
 		try:
 			with conexion.cursor() as cursor:
-				consulta = "SELECT idpaciente, ojoambliopia, tipoametropia, idusolen, proximacita, dnp, dnp1, dnp2, dnp3, ultimaevmes, ultimaevanio, tiempolen, add1, add2, add3, add11, add22, add33, emetropia, antimetropia, anisometropia, patologiaocular, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, DATE_FORMAT(fecha,'%d%m%Y'), motivoconsulta from consulta where idconsulta = "+ str(idconsulta) + ";"
+				consulta = "SELECT idpaciente, referenciaoftal, ojoambliopia, tipoametropia, idusolen, proximacita, dnp, dnp1, dnp2, dnp3, ultimaevmes, ultimaevanio, tiempolen, add1, add2, add3, add11, add22, add33, emetropia, antimetropia, anisometropia, patologiaocular, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, motivoconsulta, ametropiaoi from consulta where idconsulta = "+ str(idconsulta) + ";"
 				cursor.execute(consulta)
 				dataconsulta = cursor.fetchall()
 				idpaciente = dataconsulta[0][0]
-				fechafoto = dataconsulta[0][26]
-				
 		finally:
 			conexion.close()
 	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
@@ -625,12 +620,12 @@ def pendaprobarc(idconsulta):
 				consulta = "select idfiltrolen, filtro from filtrolen order by filtro asc;"
 				cursor.execute(consulta)
 				filtrolen = cursor.fetchall()
-				consulta = "select idlentedetallado, lentedetallado from lentedetallado order by lentedetallado asc;"
-				cursor.execute(consulta)
-				lentedetalladolen = cursor.fetchall()
 				consulta = "select idcolorlen, color from colorlen;"
 				cursor.execute(consulta)
 				colorlen = cursor.fetchall()
+				consulta = "select idlentedetallado, lentedetallado from lentedetallado;"
+				cursor.execute(consulta)
+				lentedetalladolen = cursor.fetchall()
 				consulta = "select idojo, ojo from ojo;"
 				cursor.execute(consulta)
 				dataojo = cursor.fetchall()
@@ -641,79 +636,112 @@ def pendaprobarc(idconsulta):
 				cursor.execute(consulta, (idpaciente))
 				paciente = cursor.fetchall()
 				paciente = paciente[0]
+				consulta = "SELECT oftalmologicos, familiares, glaucoma, alergicas, idantecedentes from antecedentes where idpaciente = %s;"
+				cursor.execute(consulta, idpaciente)
+				antecedentes = cursor.fetchone()
+				idantecedentes = antecedentes[4]
+				consulta = "SELECT enfermedad, tiempoevolucion, control from antmed where idantecedentes = %s;"
+				cursor.execute(consulta, idantecedentes)
+				antmed = cursor.fetchall()
+				numantmed = len(antmed)
+				consulta = "SELECT cirugia, tiempoevolucion, control from antquir where idantecedentes = %s;"
+				cursor.execute(consulta, idantecedentes)
+				antqui = cursor.fetchall()
+				numantqui = len(antqui)
+				consulta = "SELECT tipo, material, filtro, color, lentedetallado from lenterecomendado where idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				lenterecomendado = cursor.fetchall()
+				av = []
+				consulta = "SELECT avl, phae, avc from agudezavisual where idojo = 2 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				av.append(aux)
+				consulta = "SELECT avl, phae, avc from agudezavisual where idojo = 1 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				av.append(aux)
+				ra = []
+				consulta = "SELECT esfera, cilindro, eje, prisma, avcc1 from refact where idojo = 2 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				ra.append(aux)
+				consulta = "SELECT esfera, cilindro, eje, prisma, avcc1 from refact where idojo = 1 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				ra.append(aux)
+				vc = []
+				consulta = "SELECT esfera, cilindo, eje, prisma, avcc from ravc where idojo = 2 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				vc.append(aux)
+				consulta = "SELECT esfera, cilindo, eje, prisma, avcc from ravc where idojo = 1 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				vc.append(aux)
+				roa = []
+				consulta = "SELECT esfera, cilindro, eje, prisma, dvertice, avcc from refobjal where idojo = 2 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				roa.append(aux)
+				consulta = "SELECT esfera, cilindro, eje, prisma, dvertice, avcc from refobjal where idojo = 1 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				roa.append(aux)
+				ror = []
+				consulta = "SELECT esfera, cilindro, eje, prisma, dvertice, avcc from refobjref where idojo = 2 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				ror.append(aux)
+				consulta = "SELECT esfera, cilindro, eje, prisma, dvertice, avcc from refobjref where idojo = 1 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				ror.append(aux)
+				rs = []
+				consulta = "SELECT esfera, cilindro, eje, prisma, avcc, pruamb, testbi, equibino, pruest, ciljackson from refsub where idojo = 2 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				rs.append(aux)
+				consulta = "SELECT esfera, cilindro, eje, prisma, avcc, pruamb, testbi, equibino from refsub where idojo = 1 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				rs.append(aux)
+				rf = []
+				consulta = "SELECT esfera1, esfera2, esfera3, cilindro1, cilindro2, cilindro3, eje1, eje2, eje3, prisma1, prisma2, prisma3, avcc1, avcc2, avcc3 from reffin where idojo = 2 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				rf.append(aux)
+				consulta = "SELECT esfera1, esfera2, esfera3, cilindro1, cilindro2, cilindro3, eje1, eje2, eje3, prisma1, prisma2, prisma3, avcc1, avcc2, avcc3 from reffin where idojo = 1 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				rf.append(aux)
+				mo = []
+				consulta = "SELECT mmf, forias, tropias, ducciones, versiones, convergencia, ortoforico from motocu where idojo = 2 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				mo.append(aux)
+				consulta = "SELECT mmf, forias, tropias, ducciones, versiones, convergencia, ortoforico from motocu where idojo = 1 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				mo.append(aux)
+				obs = []
+				consulta = "SELECT valnormales, orbita, cejas, lagrima, viaslag, parpados, conjuntiva, esclera, cornea, camara, iris, pupila, cristalino, vitreo, nervioop, retinapp, retinape,retinamac, schirmer, but from observaciones where idojo = 2 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				obs.append(aux)
+				consulta = "SELECT valnormales, orbita, cejas, lagrima, viaslag, parpados, conjuntiva, esclera, cornea, camara, iris, pupila, cristalino, vitreo, nervioop, retinapp, retinape,retinamac, schirmer, but from observaciones where idojo = 1 and idconsulta = %s;"
+				cursor.execute(consulta, idconsulta)
+				aux = cursor.fetchone()
+				obs.append(aux)
+				consulta = "select medicamento1, descripcion1, medicamento2, descripcion2 from recetagotero where idconsulta = %s"
+				cursor.execute(consulta,idconsulta)
+				gotero = cursor.fetchone()
+				
 		finally:
 			conexion.close()
 	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
 		print("Ocurrió un error al conectar: ", e)
 	if request.method == 'POST':
 		#panel2
-		motivoconsulta = request.form["motivoconsulta"]
-		if len(motivoconsulta) < 1:
-			motivoconsulta = 0
-		ultimaevmes = request.form["ultimaevmes"]
-		ultimaevanio = request.form["ultimaevanio"]
-		tiempolentes = request.form["tiempolentes"]
-		if len(ultimaevmes) < 1:
-			ultimaevmes = 0
-		if len(ultimaevanio) < 1:
-			ultimaevanio = 0
-		if len(tiempolentes) < 1:
-			tiempolentes = 0
-		antoftal = request.form["antoftal"]
-		if len(antoftal) < 1:
-			antoftal = 0
-		antfam = request.form["antfam"]
-		antaler = request.form["antaler"]
-		antgla = request.form["antgla"]
-		if len(antfam) < 1:
-			antfam = 0
-		if len(antaler) < 1:
-			antaler = 0
-		if len(antgla) < 1:
-			antgla = 0
-		numantmed = request.form["numantmed"]
-		numantqui = request.form["numantqui"]
-		numantmed = int(numantmed)
-		numantqui = int(numantqui)
-		antmed = []
-		antqui = []
-		for i in range(numantmed):
-			aux = 'enfermedad' + str(i+1)
-			enfermedad = request.form[aux]
-			if len(enfermedad) < 1:
-				enfermedad = 0
-			try:
-				aux = 'medotro' + str(i+1)
-				otro = request.form[aux]
-				if len(otro) < 1:
-					otro = 0
-			except:
-				otro = 0
-			aux = 'tiempoevolucionm' + str(i+1)
-			tiempoev = request.form[aux]
-			if len(tiempoev) < 1:
-				tiempoev = 0
-			aux = 'controlm' + str(i+1)
-			control = request.form[aux]
-			if len(control) < 1:
-				control = 0
-			aux = [enfermedad, otro, tiempoev, control]
-			antmed.append(aux)
-		for i in range(numantqui):
-			aux = 'cirugia' + str(i+1)
-			cirugia = request.form[aux]
-			if len(cirugia) < 1:
-				cirugia = 0
-			aux = 'tiempoevolucionq' + str(i+1)
-			tiempoev = request.form[aux]
-			if len(tiempoev) < 1:
-				tiempoev = 0
-			aux = 'controlq' + str(i+1)
-			control = request.form[aux]
-			if len(control) < 1:
-				control = 0
-			aux = [cirugia, tiempoev, control]
-			antqui.append(aux)
 		#panel3
 		avlod = request.form["avlod"]
 		avloi = request.form["avloi"]
@@ -721,55 +749,27 @@ def pendaprobarc(idconsulta):
 		aeoi = request.form["aeoi"]
 		avcod = request.form["avcod"]
 		avcoi = request.form["avcoi"]
-		if len(avcod) < 1:
-			avcod = 0
-		if len(avcoi) < 1:
-			avcoi = 0
-		if len(avlod) < 1:
-			avlod = 0
-		if len(avloi) < 1:
-			avloi = 0
-		if len(aeod) < 1:
-			aeod = 0
-		if len(aeoi) < 1:
-			aeoi = 0
 		#panel4
 		raeod = request.form["raeod"]
 		racod = request.form["racod"]
-		if len(raeod) < 1:
-			raeod = 0
-		if len(racod) < 1:
-			racod = 0
 		racod = float(racod)
 		if racod > 0:
 			racod = racod * -1
 		raejod = request.form["raejod"]
-		if len(raejod) < 1:
-			raejod = 0
 		rapod = request.form["rapod"]
 		if len(rapod) < 1:
 			rapod = 0
 		raavcc1od = request.form["raavcc1od"]
-		if len(str(raavcc1od)) < 1:
-			raavcc1od = 0
 		raeoi = request.form["raeoi"]
 		racoi = request.form["racoi"]
-		if len(raeoi) < 1:
-			raeoi = 0
-		if len(racoi) < 1:
-			racoi = 0
 		racoi = float(racoi)
 		if racoi > 0:
 			racoi = racoi * -1
 		raejoi = request.form["raejoi"]
-		if len(raejoi) < 1:
-			raejoi = 0
 		rapoi = request.form["rapoi"]
 		if len(rapoi) < 1:
 			rapoi = 0
 		raavcc1oi = request.form["raavcc1oi"]
-		if len(raavcc1oi) < 1:
-			raavcc1oi = 0
 		add1 = request.form["add1"]
 		if len(add1) < 1:
 			add1 = 0
@@ -784,120 +784,68 @@ def pendaprobarc(idconsulta):
 			dnp1 = 0
 		vceod = request.form["vceod"]
 		vccod = request.form["vccod"]
-		if len(vceod) < 1:
-			vceod = 0
-		if len(vccod) < 1:
-			vccod = 0
 		vccod = float(vccod)
 		if vccod > 0:
 			vccod = vccod * -1
 		vcejod = request.form["vcejod"]
-		if len(vcejod) < 1:
-			vcejod = 0
 		vcpod = request.form["vcpod"]
 		if len(vcpod) < 1:
 			vcpod = 0
 		vcavccod = request.form["vcavccod"]
 		vceoi = request.form["vceoi"]
 		vccoi = request.form["vccoi"]
-		if len(vcavccod) < 1:
-			vcavccod = 0
-		if len(vceoi) < 1:
-			vceoi = 0
-		if len(vccoi) < 1:
-			vccoi = 0
 		vccoi = float(vccoi)
 		if vccoi > 0:
 			vccoi = vccoi * -1
 		vcejoi = request.form["vcejoi"]
-		if len(vcejoi) < 1:
-			vcejoi = 0
 		vcpoi = request.form["vcpoi"]
 		if len(vcpoi) < 1:
 			vcpoi = 0
 		vcavccoi = request.form["vcavccoi"]
-		if len(vcavccoi) < 1:
-			vcavccoi = 0
 		#panel5
 		roaeod = request.form["roaeod"]
 		roacod = request.form["roacod"]
-		if len(roaeod) < 1:
-			roaeod = 0
-		if len(roacod) < 1:
-			roacod = 0
 		roacod = float(roacod)
 		if roacod > 0:
 			roacod = roacod * -1
 		roaejod = request.form["roaejod"]
-		if len(roaejod) < 1:
-			roaejod = 0
 		roapod = request.form["roapod"]
 		if len(roapod) < 1:
 			roapod = 0
 		roavod = request.form["roavod"]
-		if len(roavod) < 1:
-			roavod = 0
 		roaavccod = request.form["roaavccod"]
-		if len(roaavccod) < 1:
-			roaavccod = 0
 		roaeoi = request.form["roaeoi"]
 		roacoi = request.form["roacoi"]
-		if len(roaeoi) < 1:
-			roaeoi = 0
-		if len(roacoi) < 1:
-			roacoi = 0
 		roacoi = float(roacoi)
 		if roacoi > 0:
 			roacoi = roacoi * -1
 		roaejoi = request.form["roaejoi"]
-		if len(roaejoi) < 1:
-			roaejoi = 0
 		roapoi = request.form["roapoi"]
 		if len(roapoi) < 1:
 			roapoi = 0
 		roavoi = request.form["roavoi"]
-		if len(roavoi) < 1:
-			roavoi = 0
 		roaavccoi = request.form["roaavccoi"]
-		if len(roaavccoi) < 1:
-			roaavccoi = 0
 		#panel6
 		rseod = request.form["rseod"]
 		rscod = request.form["rscod"]
-		if len(rseod) < 1:
-			rseod = 0
-		if len(rscod) < 1:
-			rscod = 0
 		rscod = float(rscod)
 		if rscod > 0:
 			rscod = rscod * -1
 		rsejod = request.form["rsejod"]
 		rspod = request.form["rspod"]
-		if len(rsejod) < 1:
-			rsejod = 0
 		if len(rspod) < 1:
 			rspod = 0
 		rsavccod = request.form["rsavccod"]
 		rseoi = request.form["rseoi"]
 		rscoi = request.form["rscoi"]
-		if len(rsavccod) < 1:
-			rsavccod = 0
-		if len(rseoi) < 1:
-			rseoi = 0
-		if len(rscoi) < 1:
-			rscoi = 0
 		rscoi = float(rscoi)
 		if rscoi > 0:
 			rscoi = rscoi * -1
 		rsejoi = request.form["rsejoi"]
 		rspoi = request.form["rspoi"]
-		if len(rsejoi) < 1:
-			rsejoi = 0
 		if len(rspoi) < 1:
 			rspoi = 0
 		rsavccoi = request.form["rsavccoi"]
-		if len(rsavccoi) < 1:
-			rsavccoi = 0
 		try:
 			pruamb = request.form["pruamb"]
 		except:
@@ -922,35 +870,25 @@ def pendaprobarc(idconsulta):
 		rfe1od = request.form["rfe1od"]
 		rfe2od = request.form["rfe2od"]
 		rfe3od = request.form["rfe3od"]
-		if len(rfe1od) < 1:
-			rfe1od = 0
 		if len(rfe2od) < 1:
 			rfe2od = 0
 		if len(rfe3od) < 1:
 			rfe3od = 0
 		rfc1od = request.form["rfc1od"]
-		if len(rfc1od) < 1:
-			rfc1od = 0
 		rfc1od = float(rfc1od)
 		if rfc1od > 0:
 			rfc1od = rfc1od * -1
 		rfc2od = request.form["rfc2od"]
-		if len(rfc2od) < 1:
-			rfc2od = 0
 		rfc2od = float(rfc2od)
 		if rfc2od > 0:
 			rfc2od = rfc2od * -1
 		rfc3od = request.form["rfc3od"]
-		if len(rfc3od) < 1:
-			rfc3od = 0
 		rfc3od = float(rfc3od)
 		if rfc3od > 0:
 			rfc3od = rfc3od * -1
 		rfej1od = request.form["rfej1od"]
 		rfej2od = request.form["rfej2od"]
 		rfej3od = request.form["rfej3od"]
-		if len(rfej1od) < 1:
-			rfej1od = 0
 		if len(rfej2od) < 1:
 			rfej2od = 0
 		if len(rfej3od) < 1:
@@ -967,8 +905,6 @@ def pendaprobarc(idconsulta):
 		rfavcc1od = request.form["rfavcc1od"]
 		rfavcc2od = request.form["rfavcc2od"]
 		rfavcc3od = request.form["rfavcc3od"]
-		if len(rfavcc3od) < 1:
-			rfavcc3od = 0
 		if len(rfavcc2od) < 1:
 			rfavcc2od = 0
 		if len(rfavcc3od) < 1:
@@ -976,35 +912,25 @@ def pendaprobarc(idconsulta):
 		rfe1oi = request.form["rfe1oi"]
 		rfe2oi = request.form["rfe2oi"]
 		rfe3oi = request.form["rfe3oi"]
-		if len(rfe1oi) < 1:
-			rfe1oi = 0
 		if len(rfe2oi) < 1:
 			rfe2oi = 0
 		if len(rfe3oi) < 1:
 			rfe3oi = 0
 		rfc1oi = request.form["rfc1oi"]
-		if len(rfc1oi) < 1:
-			rfc1oi = 0
 		rfc1oi = float(rfc1oi)
 		if rfc1oi > 0:
 			rfc1oi = rfc1oi * -1
 		rfc2oi = request.form["rfc2oi"]
-		if len(rfc2oi) < 1:
-			rfc2oi = 0
 		rfc2oi = float(rfc2oi)
 		if rfc2oi > 0:
 			rfc2oi = rfc2oi * -1
 		rfc3oi = request.form["rfc3oi"]
-		if len(rfc3oi) < 1:
-			rfc3oi = 0
 		rfc3oi = float(rfc3oi)
 		if rfc3oi > 0:
 			rfc3oi = rfc3oi * -1
 		rfej1oi = request.form["rfej1oi"]
 		rfej2oi = request.form["rfej2oi"]
 		rfej3oi = request.form["rfej3oi"]
-		if len(rfej1oi) < 1:
-			rfej1oi = 0
 		if len(rfej2oi) < 1:
 			rfej2oi = 0
 		if len(rfej3oi) < 1:
@@ -1021,8 +947,6 @@ def pendaprobarc(idconsulta):
 		rfavcc1oi = request.form["rfavcc1oi"]
 		rfavcc2oi = request.form["rfavcc2oi"]
 		rfavcc3oi = request.form["rfavcc3oi"]
-		if len(rfavcc1oi) < 1:
-			rfavcc1oi = 0
 		if len(rfavcc2oi) < 1:
 			rfavcc2oi = 0
 		if len(rfavcc3oi) < 1:
@@ -1207,15 +1131,11 @@ def pendaprobarc(idconsulta):
 		materiallent = request.form["materiallent"]
 		filtrolent = request.form["filtrolent"]
 		colorlent = request.form["colorlent"]
+		lentedetalladolent = request.form["lentedetalladolent"]
 		ambliopia = request.form["ambliopia"]
 		ametropia = request.form["ametropia"]
-		if len(ambliopia) < 1:
-			ambliopia = 0
-		if len(ametropia) < 1:
-			ametropia = 0
-		lentedetalladolent = request.form["lentedetalladolent"]
-		if len(lentedetalladolent) < 1:
-			lentedetalladolent = 15
+		ametropiaoi = request.form["ametropiaoi"]
+		
 		try:
 			emetropia = request.form["emetropia"]
 		except:
@@ -1262,121 +1182,74 @@ def pendaprobarc(idconsulta):
 			gmed2 = 0
 		if len(gdesc2) < 1:
 			gdesc2 = 0
+		descref = request.form["descref"]
+		if len(descref) < 1:
+			descref = 0
 		try:
 			conexion = pymysql.connect(host='localhost', user='root', password='database', db='opticadb')
 			try:
 				with conexion.cursor() as cursor:
 					#agudeza visual
-					consulta = "insert into agudezavisual(idconsulta, idojo, avl, phae, avc) values (%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 1, avloi, aeoi, avcoi))
-					consulta = "insert into agudezavisual(idconsulta, idojo, avl, phae, avc) values (%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 2, avlod, aeod, avcod))
-					
+					consulta = "update agudezavisual set avl=%s, phae=%s, avc=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (avlod, aeod, avcod, idconsulta, 2))
+					consulta = "update agudezavisual set avl=%s, phae=%s, avc=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (avloi, aeoi, avcoi, idconsulta, 1))
 					#refraccion actual
-					consulta = "insert into refact(idconsulta, idojo, esfera, cilindro, eje, avcc1, prisma) values (%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 1, raeoi, racoi, raejoi, raavcc1oi, rapoi))
-					consulta = "insert into refact(idconsulta, idojo, esfera, cilindro, eje, avcc1, prisma) values (%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 2, raeod, racod, raejod, raavcc1od, rapod))
-					
-					#Vision cercana
-					consulta = "insert into ravc(idconsulta, idojo, esfera, cilindo, eje, avcc, prisma) values (%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 1, vceoi, vccoi, vcejoi, vcavccoi, vcpoi))
-					consulta = "insert into ravc(idconsulta, idojo, esfera, cilindo, eje, avcc, prisma) values (%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 2, vceod, vccod, vcejod, vcavccod, vcpod))
-					
-					#Refraccion objetiva alumno
-					consulta = "insert into refobjal(idconsulta, idojo, esfera, cilindro, eje, avcc, prisma, dvertice) values (%s,%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 1, roaeoi, roacoi, roaejoi, roaavccoi, roapoi, roavoi))
-					consulta = "insert into refobjal(idconsulta, idojo, esfera, cilindro, eje, avcc, prisma, dvertice) values (%s,%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 2, roaeod, roacod, roaejod, roaavccod, roapod, roavod))
-					
-					#Refraccion subjetiva
-					consulta = "insert into refsub(idconsulta, idojo, esfera, cilindro, eje, avcc, prisma, pruamb, testbi, equibino, pruest,ciljackson) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 1, rseoi, rscoi, rsejoi, rsavccoi, rspoi, pruamb, testbi, equibino, pruest, ciljackson))
-					consulta = "insert into refsub(idconsulta, idojo, esfera, cilindro, eje, avcc, prisma, pruamb, testbi, equibino, pruest,ciljackson) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 2, rseod, rscod, rsejod, rsavccod, rspod, pruamb, testbi, equibino, pruest, ciljackson))
-					
-					#Refraccion final
-					consulta = "insert into reffin(idconsulta, idojo, esfera1, esfera2, esfera3, cilindro1, cilindro2, cilindro3, eje1, eje2, eje3, avcc1, avcc2, avcc3, prisma1, prisma2, prisma3) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 1, rfe1oi, rfe2oi, rfe3oi, rfc1oi, rfc2oi, rfc3oi, rfej1oi, rfej2oi, rfej3oi, rfavcc1oi, rfavcc2oi, rfavcc3oi, rfp1oi, rfp2oi, rfp3oi))
-					consulta = "insert into reffin(idconsulta, idojo, esfera1, esfera2, esfera3, cilindro1, cilindro2, cilindro3, eje1, eje2, eje3, avcc1, avcc2, avcc3, prisma1, prisma2, prisma3) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 2, rfe1od, rfe2od, rfe3od, rfc1od, rfc2od, rfc3od, rfej1od, rfej2od, rfej3od, rfavcc1od, rfavcc2od, rfavcc3od, rfp1od, rfp2od, rfp3od))
-					
+					consulta = "update refact set esfera=%s, cilindro=%s, eje=%s, prisma=%s, avcc1=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (raeod, racod, raejod, rapod, raavcc1od, idconsulta, 2))
+					consulta = "update refact set esfera=%s, cilindro=%s, eje=%s, prisma=%s, avcc1=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (raeoi, racoi, raejoi, rapoi, raavcc1oi, idconsulta, 1))
+					consulta = "update ravc set esfera=%s, cilindo=%s, eje=%s, prisma=%s, avcc=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (vceod, vccod, vcejod, vcpod, vcavccod, idconsulta, 2))
+					consulta = "update ravc set esfera=%s, cilindo=%s, eje=%s, prisma=%s, avcc=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (vceoi, vccoi, vcejoi, vcpoi, vcavccoi, idconsulta, 1))
+					#refraccion objetiva
+					consulta = "update refobjal set esfera=%s, cilindro=%s, eje=%s, prisma=%s, dvertice=%s, avcc=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (roaeod, roacod, roaejod,roapod, roavod, roaavccod, idconsulta, 2))
+					consulta = "update refobjal set esfera=%s, cilindro=%s, eje=%s, prisma=%s, dvertice=%s, avcc=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (roaeoi, roacoi, roaejoi,roapoi, roavoi, roaavccoi, idconsulta, 1))
+					consulta = "update refobjref set esfera=%s, cilindro=%s, eje=%s, prisma=%s, dvertice=%s, avcc=%s where idconsulta=%s and idojo=%s;"
+					#refraccion subjetiva
+					consulta = "update refsub set esfera=%s, cilindro=%s, eje=%s, prisma=%s, avcc=%s, pruamb=%s, testbi=%s, equibino=%s, pruest=%s, ciljackson=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (rseod, rscod, rsejod, rspod, rsavccod, pruamb, testbi, equibino, pruest, ciljackson, idconsulta, 2))
+					consulta = "update refsub set esfera=%s, cilindro=%s, eje=%s, prisma=%s, avcc=%s, pruamb=%s, testbi=%s, equibino=%s, pruest=%s, ciljackson=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (rseoi, rscoi, rsejoi, rspoi, rsavccoi, pruamb, testbi, equibino, pruest, ciljackson, idconsulta, 1))
+					#refraccion final
+					consulta = "update reffin set esfera1=%s, esfera2=%s, cilindro1=%s, cilindro2=%s, eje1=%s, eje2=%s, prisma1=%s, prisma2=%s, avcc1=%s, avcc2=%s, esfera3=%s, cilindro3=%s, eje3=%s, prisma3=%s, avcc3=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (rfe1od, rfe2od, rfc1od, rfc2od, rfej1od, rfej2od, rfp1od, rfp2od, rfavcc1od, rfavcc2od, rfe3od, rfc3od, rfej3od, rfp3od, rfavcc3od, idconsulta, 2))
+					consulta = "update reffin set esfera1=%s, esfera2=%s, cilindro1=%s, cilindro2=%s, eje1=%s, eje2=%s, prisma1=%s, prisma2=%s, avcc1=%s, avcc2=%s, esfera3=%s, cilindro3=%s, eje3=%s, prisma3=%s, avcc3=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (rfe1oi, rfe2oi, rfc1oi, rfc2oi, rfej1oi, rfej2oi, rfp1oi, rfp2oi, rfavcc1oi, rfavcc2oi, rfe3oi, rfc3oi, rfej3oi, rfp3oi, rfavcc3oi, idconsulta, 1))
 					#Motilidad Ocular
-					consulta = "insert into motocu(idconsulta, idojo, mmf, forias, tropias, ducciones, versiones, convergencia, ortoforico) values (%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 1, mmfoi, foroi, trooi, duccoi, versiones, convergencia, ortoforico))
-					consulta = "insert into motocu(idconsulta, idojo, mmf, forias, tropias, ducciones, versiones, convergencia, ortoforico) values (%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 2, mmfod, forod, trood, duccod, versiones, convergencia, ortoforico))
+					consulta = "update motocu set mmf=%s, forias=%s, tropias=%s, ducciones=%s, versiones=%s, convergencia=%s, ortoforico=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (mmfod, forod, trood, duccod, versiones, convergencia, ortoforico, idconsulta, 2))
+					consulta = "update motocu set mmf=%s, forias=%s, tropias=%s, ducciones=%s, versiones=%s, convergencia=%s, ortoforico=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (mmfoi, foroi, trooi, duccoi, versiones, convergencia, ortoforico, idconsulta, 1))
+					#salud ocular
+					consulta = "update observaciones set valnormales=%s, orbita=%s, cejas=%s, lagrima=%s, viaslag=%s, parpados=%s, conjuntiva=%s, esclera=%s, cornea=%s, camara=%s, iris=%s, pupila=%s, cristalino=%s, vitreo=%s, nervioop=%s, retinapp=%s, retinape=%s, retinamac=%s, schirmer=%s, but=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (ojsal, orbod, cejod, lagod, vilagod, pypod, conjod, esclod, cornod, camaod, iriod, pupiod, crisod, vitod, nervood, retppod, retpeod, retmacod, schod, butod, idconsulta, 2))
+					consulta = "update observaciones set valnormales=%s, orbita=%s, cejas=%s, lagrima=%s, viaslag=%s, parpados=%s, conjuntiva=%s, esclera=%s, cornea=%s, camara=%s, iris=%s, pupila=%s, cristalino=%s, vitreo=%s, nervioop=%s, retinapp=%s, retinape=%s, retinamac=%s, schirmer=%s, but=%s where idconsulta=%s and idojo=%s;"
+					cursor.execute(consulta, (ojsal, orboi, cejoi, lagoi, vilagoi, pypoi, conjoi, escloi, cornoi, camaoi, irioi, pupioi, crisoi, vitoi, nervooi, retppoi, retpeoi, retmacoi, schoi, butoi, idconsulta, 1))
 					
-					#observaciones
-					consulta = "insert into observaciones(idconsulta, idojo, valnormales, orbita, cejas, lagrima, viaslag, parpados, conjuntiva, esclera, cornea, camara, iris, pupila, cristalino, vitreo, nervioop, retinapp, retinape, retinamac, schirmer, but) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 1, ojsal, orboi, cejoi, lagoi, vilagoi, pypoi, conjoi, escloi, cornoi, camaoi, irioi, pupioi, crisoi, vitoi, nervooi, retppoi, retpeoi, retmacoi, schoi, butoi))
-					consulta = "insert into observaciones(idconsulta, idojo, valnormales, orbita, cejas, lagrima, viaslag, parpados, conjuntiva, esclera, cornea, camara, iris, pupila, cristalino, vitreo, nervioop, retinapp, retinape, retinamac, schirmer, but) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, 2, ojsal, orbod, cejod, lagod, vilagod, pypod, conjod, esclod, cornod, camaod, iriod, pupiod, crisod, vitod, nervood, retppod, retpeod, retmacod, schod, butod))
-
-					#Lente recomendado
-					consulta = "insert into lenterecomendado(idconsulta, tipo, material, filtro, color, lentedetallado) values (%s,%s,%s,%s,%s,%s);"
-					cursor.execute(consulta, (idconsulta, tipolent, materiallent, filtrolent, colorlent, lentedetalladolent))
-
 					#consulta
-					consulta = "update consulta set idusolen=%s, proximacita=%s, dnp=%s,dnp1=%s, add1=%s, add2=%s, add3=%s, add11=%s, add22=%s, add33=%s, aprobado=1, iduser=%s, dnp2=%s, dnp3=%s, ojoambliopia=%s, emetropia=%s, antimetropia=%s, tipoametropia=%s, anisometropia=%s, patologiaocular=%s, lentesoftalmicos=%s, lentescontacto=%s, refoftalmologica=%s, farmaco=%s, motivoconsulta=%s, ultimaevmes=%s, ultimaevanio=%s, tiempolen=%s where idconsulta = %s;"
-					cursor.execute(consulta, (usolent, proxicita, dnp, dnp1, add1, add2, add3, add11, add22, add33, session['iduser1'], dnp2, dnp3, ambliopia, emetropia, antimetropia, ametropia, anisometropia, patologiaoculartext, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, motivoconsulta, ultimaevmes, ultimaevanio, tiempolentes, idconsulta))
-
-					#gotas
-					consulta = "insert into recetagotero(idconsulta, medicamento1, descripcion1, medicamento2, descripcion2) values(%s,%s,%s,%s,%s)"
-					cursor.execute(consulta, (idconsulta, gmed1, gdesc1,gmed2, gdesc2))
-				conexion.commit()
-			finally:
-				conexion.close()
-		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
-			print("Ocurrió un error al conectar: ", e)
-		try:
-			conexion = pymysql.connect(host='localhost', user='root', password='database', db='opticadb')
-			try:
-				with conexion.cursor() as cursor:
-					consulta = "select idantecedentes from antecedentes where idpaciente = %s;"
-					cursor.execute(consulta, idpaciente)
-					antecedentes = cursor.fetchall()
-					exicui = len(antecedentes)
-					print(exicui)
-					#antecedentes
-					if exicui == 0:
-						consulta = "insert into antecedentes(idpaciente, oftalmologicos, familiares, glaucoma, alergicas) values (%s,%s,%s,%s,%s);"
-						cursor.execute(consulta, (idpaciente, antoftal, antfam, antgla, antaler))
-					else:
-						consulta = "update antecedentes set oftalmologicos = %s, familiares = %s, glaucoma = %s, alergicas = %s where idpaciente = %s;"
-						cursor.execute(consulta, (antoftal, antfam, antgla, antaler, idpaciente))
-				conexion.commit()
-			finally:
-				conexion.close()
-		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
-			print("Ocurrió un error al conectar: ", e)
-		try:
-			conexion = pymysql.connect(host='localhost', user='root', password='database', db='opticadb')
-			try:
-				with conexion.cursor() as cursor:
-					consulta = "select idantecedentes from antecedentes where idpaciente = %s;"
-					cursor.execute(consulta, idpaciente)
-					dataantecedentes = cursor.fetchall()
-					idantecedentes = dataantecedentes[0][0]
-					for i in range(numantmed):
-						consulta = "insert into antmed(idantecedentes, enfermedad, tiempoevolucion, control, otro) values (%s,%s,%s,%s,%s);"
-						cursor.execute(consulta, (idantecedentes, antmed[i][0], antmed[i][2],antmed[i][3],antmed[i][1]))
-					for i in range(numantqui):
-						consulta = "insert into antquir(idantecedentes, cirugia, tiempoevolucion, control) values (%s,%s,%s,%s);"
-						cursor.execute(consulta, (idantecedentes, antqui[i][0], antqui[i][1],antqui[i][2]))
+					consulta = "update consulta set idusolen=%s, proximacita=%s, dnp=%s,dnp1=%s, add1=%s, add2=%s, add3=%s, add11=%s, add22=%s, add33=%s, aprobado=1, iduser=%s, dnp2=%s, dnp3=%s, ojoambliopia=%s, emetropia=%s, antimetropia=%s, tipoametropia=%s, anisometropia=%s, patologiaocular=%s, lentesoftalmicos=%s, lentescontacto=%s, refoftalmologica=%s, farmaco=%s, ametropiaoi=%s, referenciaoftal=%s where idconsulta = %s;"
+					cursor.execute(consulta, (usolent, proxicita, dnp, dnp1, add1, add2, add3, add11, add22, add33, session['iduser1'], dnp2, dnp3, ambliopia, emetropia, antimetropia, ametropia, anisometropia, patologiaoculartext, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, ametropiaoi, descref, idconsulta))
+					#Lente Recomendado
+					consulta = "update lenterecomendado set tipo = %s, material = %s, filtro = %s, color = %s,lentedetallado = %s where idconsulta = %s;"
+					cursor.execute(consulta, (tipolent, materiallent, filtrolent, colorlent, lentedetalladolent, idconsulta))
+					#gotero
+					consulta = "update recetagotero set medicamento1 = %s, descripcion1 = %s, medicamento2 = %s, descripcion2 = %s where idconsulta = %s;"
+					cursor.execute(consulta, (gmed1, gdesc1, gmed2, gdesc2, idconsulta))
 				conexion.commit()
 			finally:
 				conexion.close()
 		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
 			print("Ocurrió un error al conectar: ", e)
 		return redirect(url_for('home'))
-	return render_template('pendaprobarc.html', title='Pendiente de aprobación', logeado=logeado, paciente = paciente, 
-		dataconsulta=dataconsulta, anios=anios, cincos=cincos, meses=meses, usolen=usolen, 
-		enfermedades=enfermedades,nervos=nervos, mms=mms, numeros=numeros, relva=relva, 
-		tipolen=tipolen, materiallen=materiallen, filtrolen=filtrolen, colorlen=colorlen, 
-		dataojo=dataojo, dataametropia=dataametropia, new_date=new_date, fechafoto=fechafoto,
-		lentedetalladolen=lentedetalladolen)
+	return render_template('editarconsulta.html', title='Editar Consulta', logeado=logeado, paciente = paciente, 
+		dataconsulta=dataconsulta, anios=anios, cincos=cincos, meses=meses, antecedentes = antecedentes, av=av, ra=ra, vc=vc, roa=roa, ror=ror, 
+		rs=rs, rf=rf, mo=mo, obs=obs, usolen=usolen, numantmed=numantmed, numantqui=numantqui, antmed=antmed, antqui=antqui, enfermedades=enfermedades,
+		nervos=nervos, mms=mms, numeros=numeros, relva=relva, tipolen=tipolen, materiallen=materiallen, filtrolen=filtrolen, colorlen=colorlen,
+		lenterecomendado=lenterecomendado, dataojo=dataojo, dataametropia=dataametropia, gotero=gotero, lentedetalladolen=lentedetalladolen)
 
 @app.route("/ver/<idpaciente>", methods=['GET', 'POST'])
 def ver(idpaciente):
@@ -1420,6 +1293,7 @@ def ver(idpaciente):
 	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
 		print("Ocurrió un error al conectar: ", e)
 	dateac = date.today()
+	new_date = dateac + timedelta(days=183)
 	d3 = dateac.strftime("%d/%m/%y")
 	d3 = str(d3)
 	year = dateac.strftime("%Y")
@@ -1473,6 +1347,8 @@ def ver(idpaciente):
 
 	ingresconsultas = []
 	contaux = 0
+	print(haynew)
+	print(conteo)
 	for i in listconsultas:
 		print('Datos:', i)
 		ingreconsulta = []
@@ -1500,7 +1376,9 @@ def ver(idpaciente):
 					paciente = cursor.fetchall()
 					paciente = paciente[0]
 					ingreconsulta.append(paciente)
+					print(contaux)
 					if (contaux != conteo - 1) or ((contaux == conteo - 1) and (haynew == 0)):
+						print("entró")
 						consulta = "SELECT oftalmologicos, familiares, glaucoma, alergicas, idantecedentes from antecedentes where idpaciente = %s;"
 						cursor.execute(consulta, idpaciente)
 						antecedentes = cursor.fetchone()
@@ -1615,7 +1493,6 @@ def ver(idpaciente):
 			print("Ocurrió un error al conectar: ", e)
 		contaux = contaux + 1
 	if request.method == 'POST':
-		print('entró')
 		#panel2
 		motivoconsulta = request.form["motivoconsulta"]
 		if len(motivoconsulta) < 1:
@@ -1894,7 +1771,6 @@ def ver(idpaciente):
 		rfe3od = request.form["rfe3od"]
 		if len(rfe1od) < 1:
 			rfe1od = 0
-		print(rfe1od)
 		if len(rfe2od) < 1:
 			rfe2od = 0
 		if len(rfe3od) < 1:
@@ -1931,7 +1807,6 @@ def ver(idpaciente):
 		rfp3od = request.form["rfp3od"]
 		if len(rfp1od) < 1:
 			rfp1od = 0
-		
 		if len(rfp2od) < 1:
 			rfp2od = 0
 		if len(rfp3od) < 1:
@@ -1939,8 +1814,8 @@ def ver(idpaciente):
 		rfavcc1od = request.form["rfavcc1od"]
 		rfavcc2od = request.form["rfavcc2od"]
 		rfavcc3od = request.form["rfavcc3od"]
-		if len(rfavcc3od) < 1:
-			rfavcc3od = 0
+		if len(rfavcc1od) < 1:
+			rfavcc1od = 0
 		if len(rfavcc2od) < 1:
 			rfavcc2od = 0
 		if len(rfavcc3od) < 1:
@@ -2353,7 +2228,7 @@ def ver(idpaciente):
 	meses=meses, usolen=usolen, enfermedades=enfermedades, nervos=nervos, mms=mms, numeros=numeros, 
 	relva=relva, tipolen=tipolen, materiallen=materiallen, filtrolen=filtrolen, colorlen=colorlen,
 	dataojo=dataojo, dataametropia=dataametropia, lentedetalladolen=lentedetalladolen, haynew=haynew, 
-	ingresconsultas=ingresconsultas, conteo=conteo, listconsultas=listconsultas)
+	ingresconsultas=ingresconsultas, conteo=conteo, listconsultas=listconsultas, new_date=new_date)
 
 @app.route("/crearusuario", methods=['GET', 'POST'])
 def crearusuario():
