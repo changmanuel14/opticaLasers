@@ -18,8 +18,10 @@
                 <input type="number" id="telefono1" name="telefono1" class="inputtext" tabindex="11" placeholder="  Teléfono 2" maxlength="8" minlength="0" disabled value="{{paciente[10]}}"><br>
                 <input type="text" id="profesion" name="profesion" class="inputtext" tabindex="12" required placeholder="  Profesión" disabled value="{{paciente[6]}}">&nbsp;&nbsp;&nbsp;
                 <input type="text" id="direccion" name="direccion" class="inputtext" tabindex="13" placeholder="  Dirección" disabled value="{{paciente[7]}}"><br>
-                <input type="date" id="fechanac" name="fechanac" class="inputtext" tabindex="14" title="Fecha de Nacimiento" required disabled value="{{paciente[4]}}">
+                <input type="date" id="fechanac" name="fechanac" class="inputtext" tabindex="14" title="Fecha de Nacimiento" required disabled value="{{paciente[4]}}"><br>
+                <img src="{{url_for('static', filename = 'fotografias/'~paciente[0]~paciente[1]~paciente[2]~paciente[3]~paciente[8]~dataconsulta[0][29]~'.jpeg')}}">
             </center>
+            
             <br>
             <h3>Motivo de Consulta</h3>
             <table>

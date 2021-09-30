@@ -722,6 +722,12 @@
                 </tr>
             </table>
             <br>
+            <center>
+            <img src="{{url_for('static', filename = 'uploads/'~listconsultas[i][0]~ingresconsultas[i][1]~'.jpeg')}}" style="width: 50%;">
+            <img src="{{url_for('static', filename = 'uploads/'~listconsultas[i][0]~ingresconsultas[i][1]~'.jpg')}}" style="width: 50%;">
+            <img src="{{url_for('static', filename = 'uploads/'~listconsultas[i][0]~ingresconsultas[i][1]~'.png')}}" style="width: 50%;">
+        </center>
+            <br>
             <table>
                 <tr class="fondoblanco">
                     <th rowspan="3"><label for="diagnostico">Diagnóstico:</label></th>
@@ -870,7 +876,7 @@
         {% else %}
         {% if haynew == 1 %}
         <div id="menu{{i}}" class="tab-pane fade" style="padding-left: 5%;">
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
             <br>
             <h3>Datos de Paciente</h3>
             <center>
@@ -1473,6 +1479,8 @@
                     <td><input type="text" class="inputtext1" id="retpeoi" name="retpeoi"></td>
                 </tr>
             </table>
+            <br>
+            <input type="file" id="file" name="file" accept=".png,.jpg,.jpeg">
             <br>
             <h3>Diagnóstico y Tratamiento</h3>
             <table>
@@ -2284,6 +2292,12 @@
                     <td>{{ingresconsultas[i][17][1][16]}}</td>
                 </tr>
             </table>
+            <br>
+            <center>
+            <img src="{{url_for('static', filename = 'uploads/'~listconsultas[i][0]~ingresconsultas[i][1]~'.jpeg')}}" style="width: 50%;">
+            <img src="{{url_for('static', filename = 'uploads/'~listconsultas[i][0]~ingresconsultas[i][1]~'.jpg')}}" style="width: 50%;">
+            <img src="{{url_for('static', filename = 'uploads/'~listconsultas[i][0]~ingresconsultas[i][1]~'.png')}}" style="width: 50%;">
+        </center>
             <br>
             <table>
                 <tr class="fondoblanco">

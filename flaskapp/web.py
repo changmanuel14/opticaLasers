@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session, m
 import pymysql
 from datetime import date, timedelta, datetime
 import urllib.request
+import os
 import pdfkit
 
 app = Flask(__name__)
@@ -596,7 +597,7 @@ def editarconsulta(idconsulta):
 		conexion = pymysql.connect(host='localhost', user='root', password='database', db='opticadb')
 		try:
 			with conexion.cursor() as cursor:
-				consulta = "SELECT idpaciente, referenciaoftal, ojoambliopia, tipoametropia, idusolen, proximacita, dnp, dnp1, dnp2, dnp3, ultimaevmes, ultimaevanio, tiempolen, add1, add2, add3, add11, add22, add33, emetropia, antimetropia, anisometropia, patologiaocular, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, motivoconsulta, ametropiaoi from consulta where idconsulta = "+ str(idconsulta) + ";"
+				consulta = "SELECT idpaciente, referenciaoftal, ojoambliopia, tipoametropia, idusolen, proximacita, dnp, dnp1, dnp2, dnp3, ultimaevmes, ultimaevanio, tiempolen, add1, add2, add3, add11, add22, add33, emetropia, antimetropia, anisometropia, patologiaocular, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, motivoconsulta, ametropiaoi, DATE_FORMAT(fecha,'%d%m%Y') from consulta where idconsulta = "+ str(idconsulta) + ";"
 				cursor.execute(consulta)
 				dataconsulta = cursor.fetchall()
 				idpaciente = dataconsulta[0][0]
@@ -2047,6 +2048,18 @@ def ver(idpaciente):
 		if len(retmacoi) < 1:
 			retmacoi = 0
 		
+
+		file = request.files['file']
+		filename = str(idconsulta) + fechafoto
+		if '.png' in file.filename:
+			filename = filename + '.png'
+		elif '.jpg' in file.filename:
+			filename = filename + '.jpg'
+		elif '.jpeg' in file.filename:
+			filename = filename + '.jpeg'
+		print(filename)
+		file.save(os.path.join("flaskapp\\static\\uploads", filename))
+
 		#panel10
 		proxicita = request.form["proxicita"]
 		usolent = request.form["usolent"]
