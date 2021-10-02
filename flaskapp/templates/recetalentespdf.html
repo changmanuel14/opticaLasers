@@ -7,9 +7,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://kendo.cdn.telerik.com/2017.2.621/js/kendo.all.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="//db.onlinewebfonts.com/c/33bc06ea126d3ff79886277122f1f510?family=Brush+Script+MT" rel="stylesheet" type="text/css"/>
     <style type="text/css">
     .letragrande{
         font-size: 25px;
+    }
+    .cursiva {
+        font-family: "Brush Script MT"
     }
     .derecha {
         float: right;
@@ -101,24 +105,24 @@
                         <center>
                     <table style="width: 100%;">
                         <tr>
-                            <th class="letragrande" style="background-color: #0000FF; color: white;">Nombre:</th>
-                            <td class="letragrande" style="text-align: center;">{{dataconsulta[0][0]}} {{dataconsulta[0][1]}} {{dataconsulta[0][2]}} {{dataconsulta[0][3]}}</td>
+                            <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">Nombre:</th>
+                            <td class="letragrande1 cursiva" style="text-align: center;">{{dataconsulta[0][0]}} {{dataconsulta[0][1]}} {{dataconsulta[0][2]}} {{dataconsulta[0][3]}}</td>
                         </tr>
                     </table></center><br>
                         <center>
                             <table style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th class="letragrande" style="background-color: #0000FF; color: white;">RX</th>
-                                        <th class="letragrande" style="background-color: #0000FF; color: white;">Esfera</th>
-                                        <th class="letragrande" style="background-color: #0000FF; color: white;">Cilindro</th>
-                                        <th class="letragrande" style="background-color: #0000FF; color: white;">Eje</th>
-                                        <th class="letragrande" style="background-color: #0000FF; color: white;">Prisma</th>
-                                        <th class="letragrande" style="background-color: #0000FF; color: white;">Lente Recomendado</th>
+                                        <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">RX</th>
+                                        <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">Esfera</th>
+                                        <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">Cilindro</th>
+                                        <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">Eje</th>
+                                        <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">Prisma</th>
+                                        <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">Lente Recomendado</th>
                                     </tr>
                                 </thead>
                                     <tr>
-                                        <th class="letragrande" style="background-color: #0000FF; color: white;">OD</th>
+                                        <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">OD</th>
                                         <td class="letragrande" id="esod"></td>
                                         <td class="letragrande"  id="ciod"></td>
                                         <td class="letragrande" id="ejod"></td>
@@ -126,16 +130,16 @@
                                         <td rowspan="3" class="letragrande">Tipo: {{lenterecomendado[0][0]}}<br>Material: {{lenterecomendado[0][1]}}<br>Filtro: {{lenterecomendado[0][2]}}<br>Color: {{lenterecomendado[0][3]}}<br>Tallado: {{lenterecomendado[0][4]}}</td>
                                     </tr>
                                     <tr>
-                                        <th class="letragrande" style="background-color: #0000FF; color: white;">OI</th>
+                                        <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">OI</th>
                                         <td class="letragrande" id="esoi"></td>
                                         <td class="letragrande" id="cioi"></td>
                                         <td class="letragrande" id="ejoi"></td>
                                         <td class="letragrande" id="proi"></td>
                                     </tr>
                                     <tr>
-                                        <th class="letragrande" style="background-color: #0000FF; color: white;">DNP</th>
+                                        <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">DNP</th>
                                         <td class="letragrande">{{dataconsulta[0][7]}}</td>
-                                        <th class="letragrande" style="background-color: #0000FF; color: white;">ADD</th>
+                                        <th class="letragrande1 cursiva" style="background-color: #0000FF; color: white;">ADD</th>
                                         <td class="letragrande" id="add">{{dataconsulta[0][8]}}</td>
                                         <td class="letragrande"></td>
                                     </tr>
@@ -145,7 +149,7 @@
                                         <th colspan="2" style="padding-top: 1.5%; padding-bottom: 1.5%;" class="letragrande" >Lente Oftalmico. Uso: {{dataconsulta[0][5]}}  <br></th>
                                     </tr>
                                     <tr>
-                                        <th class="letragrande" style="width: 30%; background-color: #0000FF; color: white;">Proxima evaluacion</th>
+                                        <th class="letragrande1 cursiva" style="width: 30%; background-color: #0000FF; color: white;">Proxima evaluacion</th>
                                         <th rowspan="2" class="letragrande"><br><br><br></th>
                                     </tr>
                                     <tr>

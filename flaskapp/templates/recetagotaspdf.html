@@ -7,9 +7,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://kendo.cdn.telerik.com/2017.2.621/js/kendo.all.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="//db.onlinewebfonts.com/c/33bc06ea126d3ff79886277122f1f510?family=Brush+Script+MT" rel="stylesheet" type="text/css"/>
     <style type="text/css">
     .letragrande{
         font-size: 25px;
+    }
+    .cursiva {
+        font-family: "Brush Script MT"
     }
     .derecha {
         float: right;
@@ -64,49 +68,6 @@
         #page-wrap dd { width: 600px; float: right; }
         #page-wrap dd.clear { float: none; margin: 0; height: 15px; }
      </style>
-        <style type="text/css">
-        body {
-          background-image: url('');
-        }
-            .letragrande{
-                font-size: 25px;
-            }
-            .derecha {
-                float: right;
-                width: 40%;
-                position: relative;
-            }
-        
-            .derecha1 {
-                float: right;
-                width: 50%;
-                position: relative;
-            }
-            .letragrande1{
-                font-size: 30px;
-            }
-        
-            .izquierda {
-                float: left;
-                width: 100%;
-                position: relative;
-            }
-        
-            .izquierda1 {
-                float: left;
-                width: 40%;
-                position: relative;
-            }
-            h1, h2, h3, h4, h5, h6, p, label {
-                color: #000000;
-            }
-            table, th, td {
-                border: 1px solid black;
-                color: #000000;
-                border-collapse: collapse;
-            }
-        
-            </style>
 </head>
 <body>
     <main role="main" class="container">
@@ -140,11 +101,11 @@
                     <center>
                     <table style="width: 100%;">
                         <tr style="border: white;">
-                            <th class="letragrande1"  style="background-color: #0000FF; color: white; width: 45%; ">Nombre: </th>
-                            <td class="letragrande1" style="text-align: center;">{{dataconsulta[0][0]}} {{dataconsulta[0][1]}} {{dataconsulta[0][2]}} {{dataconsulta[0][3]}}</td>
+                            <th class="letragrande1 cursiva"  style="background-color: #0000FF; color: white; width: 45%; ">Nombre: </th>
+                            <td class="letragrande1 cursiva" style="text-align: center;">{{dataconsulta[0][0]}} {{dataconsulta[0][1]}} {{dataconsulta[0][2]}} {{dataconsulta[0][3]}}</td>
                         </tr>
                         <tr style="border: white;">
-                            <th class="letragrande1"  style="background-color: #0000FF; color: white;">Fecha Proxima Cita: </th>
+                            <th class="letragrande1 cursiva"  style="background-color: #0000FF; color: white;">Fecha Proxima Cita: </th>
                             <td class="letragrande1" style="text-align: center;">{{dataconsulta[0][6]}}</td>
                         </tr>
                     </table>

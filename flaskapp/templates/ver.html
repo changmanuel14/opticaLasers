@@ -430,7 +430,16 @@
             <table>
                 <tr class="fondoblanco">
                     <th><label for="proxcita">Próxima Cita:</label></th>
-                    <td colspan="5"><input type="date" class="inputtext" id="proxicita" name="proxicita" value="{{ingresconsultas[i][0][0][4]}}" disabled></td>
+                    <td colspan="5">
+                        <select id="lapsotiempo2" class="inputtext" name="lapsotiempo2" disabled>
+                            <option value="6 meses" selected>6 meses</option>
+                            {% if ingresconsultas[i][0][0][32] == '12 meses' %}
+                            <option value="12 meses" selected>12 meses</option>
+                            {% else %}
+                            <option value="12 meses">12 meses</option>
+                            {% endif %}
+                        </select>
+                        <input type="date" class="inputtext" id="proxicitaextra" name="proxicitaextra" value="{{ingresconsultas[i][0][0][4]}}" disabled></td>
                 </tr>
                 <tr class="fondoblanco">
                     <th><label for="usolent">Uso Lentes:</label></th>
@@ -448,7 +457,7 @@
                 <tr class="fondoblanco">
                     <th><label for="lenrecom">Lente Recomendado:</label></th>
                     <td><select name="tipolent" id="tipolent" class="inputtext1" disabled>
-                        <option value="">Seleccione tipo</option>
+                        <option>Seleccione tipo</option>
                         {% for j in tipolen %}
                         {% if j[0] == ingresconsultas[i][9][0][0] %}
                         <option value="{{j[0]}}" selected>{{j[1]}}</option>
@@ -460,7 +469,7 @@
                     <td><select name="lentedetalladolent" id="lentedetalladolent" class="inputtext1" disabled>
                         <option value="">Seleccione Lente Detallado</option>
                         {% for j in lentedetalladolen %}
-                        {% if i[0] == ingresconsultas[i][9][0][4] %}
+                        {% if j[0] == ingresconsultas[i][9][0][4] %}
                         <option value="{{j[0]}}" selected>{{j[1]}}</option>
                         {% else %}
                         <option value="{{j[0]}}">{{j[1]}}</option>
@@ -743,6 +752,8 @@
                             {% endif %}
                             {% endfor %}
                         </select>
+                        <input type="text" name="ambliopiaoi1" id="ambliopiaoi1" class="inputtext1" placeholder="   Ambliopía OI" value="{{ingresconsultas[i][0][0][30]}}" disabled>
+                        <input type="text" name="ambliopiaod1" id="ambliopiaod1" class="inputtext1" placeholder="   Ambliopía OD" value="{{ingresconsultas[i][0][0][31]}}" disabled>
                     </td>
                     <td colspan="3">
                         <select name="ametropia" id="ametropia" class="inputtext1" disabled>
@@ -868,7 +879,7 @@
                 <table id="referencia1" style="display: block;">
                 <tr>
                     <td colspan="2">
-                        <textarea id="recreferencia" name="recreferencia" rows="2" cols="65" style="font-size: 25px;" placeholder="Referencia Oftálmica" disabled>{{ingresconsultas[i][0][29]}}</textarea>
+                        <textarea id="recreferencia1" name="recreferencia1" rows="2" cols="65" style="font-size: 25px;" placeholder="Referencia Oftálmica" disabled>{{ingresconsultas[i][0][0][29]}}</textarea>
                     </td>
                 </tr>
             </table>
@@ -1253,7 +1264,12 @@
             <table>
                 <tr class="fondoblanco">
                     <th><label for="proxcita">Próxima Cita:</label></th>
-                    <td colspan="5"><input type="date" class="inputtext" id="proxicita" name="proxicita" value="{{new_date}}"></td>
+                    <td colspan="5">
+                        <select id="lapsotiempo" class="inputtext" name="lapsotiempo" onchange="proximacita()">
+                            <option value="6 meses">6 meses</option>
+                            <option value="12 meses">12 meses</option>
+                        </select>
+                        <input type="date" class="inputtext" id="proxicita" name="proxicita" value="{{new_date}}"></td>
                 </tr>
                 <tr class="fondoblanco">
                     <th><label for="usolent">Uso Lentes:</label></th>
@@ -1487,13 +1503,15 @@
                 <tr class="fondoblanco">
                     <th rowspan="3"><label for="diagnostico">Diagnóstico:</label></th>
                     <td colspan="2">
-                        <select name="ambliopia" id="ambliopia" class="inputtext1">
+                        <select name="ambliopia" id="ambliopia" class="inputtext1" onchange="ojosambliopia()">
                             <option value="">-----Ambliopía-----</option>
                             <option value="0">Ninguno</option>
                             {% for i in dataojo %}
                             <option value="{{i[0]}}">{{i[1]}}</option>
                             {% endfor %}
                         </select>
+                        <input type="text" name="ambliopiaoi" id="ambliopiaoi" class="inputtext1" placeholder="   Ambliopía OI" disabled>
+                        <input type="text" name="ambliopiaod" id="ambliopiaod" class="inputtext1" placeholder="   Ambliopía OD" disabled>
                     </td>
                     <td colspan="3">
                         <select name="ametropia" id="ametropia" class="inputtext1">
@@ -2001,7 +2019,16 @@
             <table>
                 <tr class="fondoblanco">
                     <th><label for="proxcita">Próxima Cita:</label></th>
-                    <td colspan="5"><input type="date" class="inputtext" id="proxicita" name="proxicita" value="{{ingresconsultas[i][0][0][4]}}" disabled></td>
+                    <td colspan="5">
+                        <select id="lapsotiempo1" class="inputtext" name="lapsotiempo1" disabled>
+                            <option value="6 meses" selected>6 meses</option>
+                            {% if ingresconsultas[i][0][0][32] == '12 meses' %}
+                            <option value="12 meses" selected>12 meses</option>
+                            {% else %}
+                            <option value="12 meses">12 meses</option>
+                            {% endif %}
+                        </select>
+                        <input type="date" class="inputtext" id="proxicitaextra" name="proxicitaextra" value="{{ingresconsultas[i][0][0][4]}}" disabled></td>
                 </tr>
                 <tr class="fondoblanco">
                     <th><label for="usolent">Uso Lentes:</label></th>
@@ -2031,7 +2058,7 @@
                     <td><select name="lentedetalladolent" id="lentedetalladolent" class="inputtext1" disabled>
                         <option value="">Seleccione Lente Detallado</option>
                         {% for j in lentedetalladolen %}
-                        {% if i[0] == ingresconsultas[i][9][0][4] %}
+                        {% if j[0] == ingresconsultas[i][9][0][4] %}
                         <option value="{{j[0]}}" selected>{{j[1]}}</option>
                         {% else %}
                         <option value="{{j[0]}}">{{j[1]}}</option>
@@ -2314,6 +2341,8 @@
                             {% endif %}
                             {% endfor %}
                         </select>
+                        <input type="text" name="ambliopiaoi2" id="ambliopiaoi2" class="inputtext1" placeholder="   Ambliopía OI" value="{{ingresconsultas[i][0][0][30]}}" disabled>
+                        <input type="text" name="ambliopiaod2" id="ambliopiaod2" class="inputtext1" placeholder="   Ambliopía OD" value="{{ingresconsultas[i][0][0][31]}}" disabled>
                     </td>
                     <td colspan="3">
                         <select name="ametropia" id="ametropia" class="inputtext1" disabled>
@@ -2439,7 +2468,7 @@
                 <table id="referencia1" style="display: block;">
                 <tr>
                     <td colspan="2">
-                        <textarea id="recreferencia" name="recreferencia" rows="2" cols="65" style="font-size: 25px;" placeholder="Referencia Oftálmica" disabled>{{ingresconsultas[i][0][29]}}</textarea>
+                        <textarea id="recreferencia2" name="recreferencia2" rows="2" cols="65" style="font-size: 25px;" placeholder="Referencia Oftálmica" disabled>{{ingresconsultas[i][0][0][29]}}</textarea>
                     </td>
                 </tr>
             </table>
@@ -2451,6 +2480,33 @@
         </div>
       </div>
       <script type="text/javascript">
+        function ojosambliopia(){
+            var select = document.getElementById('ambliopia')
+            if (select.value == 0){
+                document.getElementById('ambliopiaoi').disabled = true
+                document.getElementById('ambliopiaod').disabled = true
+            }else if (select.value == 1) {
+                document.getElementById('ambliopiaoi').disabled = false
+                document.getElementById('ambliopiaod').disabled = true
+            }else if (select.value == 2) {
+                document.getElementById('ambliopiaoi').disabled = true
+                document.getElementById('ambliopiaod').disabled = false
+            }else if (select.value == 3) {
+                document.getElementById('ambliopiaoi').disabled = false
+                document.getElementById('ambliopiaod').disabled = false
+            }
+        }
+        function proximacita() {
+            var select = document.getElementById('lapsotiempo')
+            if (select.value == '6 meses'){
+                document.getElementById('proxicita').value = '{{new_date}}'
+            }else if (select.value == '12 meses'){
+                document.getElementById('proxicita').value = '{{new_date1}}'
+            }else {
+                document.getElementById('proxicita').value = '0000-00-00'
+            }
+
+        }
         function colorespanel(codpanel){
                 codpanel = parseInt(codpanel)
                 var cont = {{conteo}}

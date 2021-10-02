@@ -430,7 +430,7 @@ def recetas(idconsulta):
 					datagotero = [0,0,0,0]
 				else:
 					datagotero = aux[0]
-				consulta = "SELECT p.nombre1, p.nombre2, p.apellido1, p.apellido2, DATE_FORMAT(c.fecha,'%d/%m/%Y'), u.uso, DATE_FORMAT(c.proximacita,'%d/%m/%Y'), c.dnp, c.add11, c.add22, c.add33, o.nombre, o.apellido from paciente p inner join consulta c on p.idpaciente = c.idpaciente inner join usolen u on u.idusolen = c.idusolen inner join user o ON o.iduser = c.iduser where idconsulta = " + str(idconsulta) + ";"
+				consulta = "SELECT p.nombre1, p.nombre2, p.apellido1, p.apellido2, DATE_FORMAT(c.fecha,'%d/%m/%Y'), u.uso, DATE_FORMAT(c.proximacita,'%d/%m/%Y'), c.dnp, c.add11, c.add22, c.add33, o.nombre, o.apellido, c.periodotiempo from paciente p inner join consulta c on p.idpaciente = c.idpaciente inner join usolen u on u.idusolen = c.idusolen inner join user o ON o.iduser = c.iduser where idconsulta = " + str(idconsulta) + ";"
 				cursor.execute(consulta)
 				dataconsulta = cursor.fetchall()
 				consulta = "SELECT t.tipo, m.material, f.filtro, c.color, d.lentedetallado from lenterecomendado l inner join tipolen t on t.idtipolen=l.tipo inner join materiallen m on m.idmateriallen=l.material inner join filtrolen f on f.idfiltrolen=l.filtro inner join colorlen c on c.idcolorlen=l.color inner join lentedetallado d on d.idlentedetallado = l.lentedetallado where l.idconsulta = %s;"
@@ -597,7 +597,7 @@ def editarconsulta(idconsulta):
 		conexion = pymysql.connect(host='localhost', user='root', password='database', db='opticadb')
 		try:
 			with conexion.cursor() as cursor:
-				consulta = "SELECT idpaciente, referenciaoftal, ojoambliopia, tipoametropia, idusolen, proximacita, dnp, dnp1, dnp2, dnp3, ultimaevmes, ultimaevanio, tiempolen, add1, add2, add3, add11, add22, add33, emetropia, antimetropia, anisometropia, patologiaocular, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, motivoconsulta, ametropiaoi, DATE_FORMAT(fecha,'%d%m%Y') from consulta where idconsulta = "+ str(idconsulta) + ";"
+				consulta = "SELECT idpaciente, referenciaoftal, ojoambliopia, tipoametropia, idusolen, proximacita, dnp, dnp1, dnp2, dnp3, ultimaevmes, ultimaevanio, tiempolen, add1, add2, add3, add11, add22, add33, emetropia, antimetropia, anisometropia, patologiaocular, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, motivoconsulta, tipoametropiaoi, DATE_FORMAT(fecha,'%d%m%Y'), ambliopiaoi, ambliopiaod, periodotiempo from consulta where idconsulta = "+ str(idconsulta) + ";"
 				cursor.execute(consulta)
 				dataconsulta = cursor.fetchall()
 				idpaciente = dataconsulta[0][0]
@@ -1134,6 +1134,15 @@ def editarconsulta(idconsulta):
 		colorlent = request.form["colorlent"]
 		lentedetalladolent = request.form["lentedetalladolent"]
 		ambliopia = request.form["ambliopia"]
+		lapsotiempo = request.form["lapsotiempo"]
+		try:
+			ambliopiaoi = request.form["ambliopiaoi"]
+		except:
+			ambliopiaoi = 0
+		try:
+			ambliopiaod = request.form["ambliopiaod"]
+		except:
+			ambliopiaod = 0
 		ametropia = request.form["ametropia"]
 		ametropiaoi = request.form["ametropiaoi"]
 		
@@ -1232,8 +1241,8 @@ def editarconsulta(idconsulta):
 					cursor.execute(consulta, (ojsal, orboi, cejoi, lagoi, vilagoi, pypoi, conjoi, escloi, cornoi, camaoi, irioi, pupioi, crisoi, vitoi, nervooi, retppoi, retpeoi, retmacoi, schoi, butoi, idconsulta, 1))
 					
 					#consulta
-					consulta = "update consulta set idusolen=%s, proximacita=%s, dnp=%s,dnp1=%s, add1=%s, add2=%s, add3=%s, add11=%s, add22=%s, add33=%s, aprobado=1, iduser=%s, dnp2=%s, dnp3=%s, ojoambliopia=%s, emetropia=%s, antimetropia=%s, tipoametropia=%s, anisometropia=%s, patologiaocular=%s, lentesoftalmicos=%s, lentescontacto=%s, refoftalmologica=%s, farmaco=%s, ametropiaoi=%s, referenciaoftal=%s where idconsulta = %s;"
-					cursor.execute(consulta, (usolent, proxicita, dnp, dnp1, add1, add2, add3, add11, add22, add33, session['iduser1'], dnp2, dnp3, ambliopia, emetropia, antimetropia, ametropia, anisometropia, patologiaoculartext, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, ametropiaoi, descref, idconsulta))
+					consulta = "update consulta set idusolen=%s, proximacita=%s, dnp=%s,dnp1=%s, add1=%s, add2=%s, add3=%s, add11=%s, add22=%s, add33=%s, aprobado=1, iduser=%s, dnp2=%s, dnp3=%s, ojoambliopia=%s, emetropia=%s, antimetropia=%s, tipoametropia=%s, anisometropia=%s, patologiaocular=%s, lentesoftalmicos=%s, lentescontacto=%s, refoftalmologica=%s, farmaco=%s, tipoametropiaoi=%s, referenciaoftal=%s, ambliopiaoi=%s, ambliopiaod=%s, periodotiempo=%s  where idconsulta = %s;"
+					cursor.execute(consulta, (usolent, proxicita, dnp, dnp1, add1, add2, add3, add11, add22, add33, session['iduser1'], dnp2, dnp3, ambliopia, emetropia, antimetropia, ametropia, anisometropia, patologiaoculartext, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, ametropiaoi, descref, ambliopiaoi, ambliopiaod, lapsotiempo, idconsulta))
 					#Lente Recomendado
 					consulta = "update lenterecomendado set tipo = %s, material = %s, filtro = %s, color = %s,lentedetallado = %s where idconsulta = %s;"
 					cursor.execute(consulta, (tipolent, materiallent, filtrolent, colorlent, lentedetalladolent, idconsulta))
@@ -1295,6 +1304,7 @@ def ver(idpaciente):
 		print("Ocurrió un error al conectar: ", e)
 	dateac = date.today()
 	new_date = dateac + timedelta(days=183)
+	new_date1 = dateac + timedelta(days=365)
 	d3 = dateac.strftime("%d/%m/%y")
 	d3 = str(d3)
 	year = dateac.strftime("%Y")
@@ -1334,6 +1344,7 @@ def ver(idpaciente):
 				listconsultas = cursor.fetchall()
 				conteo = len(listconsultas)
 				consulta = "SELECT idconsulta from consulta where idpaciente = "+ str(idpaciente) + " and fecha = '"+ str(dateac) + "' and aprobado = 0 order by fecha asc;"
+				print(consulta)
 				cursor.execute(consulta)
 				dateaux = cursor.fetchall()
 				if len(dateaux) > 0:
@@ -1348,16 +1359,13 @@ def ver(idpaciente):
 
 	ingresconsultas = []
 	contaux = 0
-	print(haynew)
-	print(conteo)
 	for i in listconsultas:
-		print('Datos:', i)
 		ingreconsulta = []
 		try:
 			conexion = pymysql.connect(host='localhost', user='root', password='database', db='opticadb')
 			try:
 				with conexion.cursor() as cursor:
-					consulta = "SELECT idpaciente, ojoambliopia, tipoametropia, idusolen, proximacita, dnp, dnp1, dnp2, dnp3, ultimaevmes, ultimaevanio, tiempolen, add1, add2, add3, add11, add22, add33, emetropia, antimetropia, anisometropia, patologiaocular, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, DATE_FORMAT(fecha,'%d%m%Y'), motivoconsulta, tipoametropiaoi, referenciaoftal from consulta where idconsulta = "+ str(i[0]) + ";"
+					consulta = "SELECT idpaciente, ojoambliopia, tipoametropia, idusolen, proximacita, dnp, dnp1, dnp2, dnp3, ultimaevmes, ultimaevanio, tiempolen, add1, add2, add3, add11, add22, add33, emetropia, antimetropia, anisometropia, patologiaocular, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, DATE_FORMAT(fecha,'%d%m%Y'), motivoconsulta, tipoametropiaoi, referenciaoftal, ambliopiaoi, ambliopiaod, periodotiempo from consulta where idconsulta = "+ str(i[0]) + ";"
 					cursor.execute(consulta)
 					dataconsulta = cursor.fetchall()
 					idpaciente = dataconsulta[0][0]
@@ -1378,6 +1386,8 @@ def ver(idpaciente):
 					paciente = paciente[0]
 					ingreconsulta.append(paciente)
 					print(contaux)
+					print(haynew)
+					print(conteo)
 					if (contaux != conteo - 1) or ((contaux == conteo - 1) and (haynew == 0)):
 						print("entró")
 						consulta = "SELECT oftalmologicos, familiares, glaucoma, alergicas, idantecedentes from antecedentes where idpaciente = %s;"
@@ -1401,6 +1411,7 @@ def ver(idpaciente):
 						consulta = "SELECT tipo, material, filtro, color, lentedetallado from lenterecomendado where idconsulta = %s;"
 						cursor.execute(consulta, i[0])
 						lenterecomendado = cursor.fetchall()
+						print(lenterecomendado[0][4])
 						ingreconsulta.append(lenterecomendado)
 						av = []
 						consulta = "SELECT avl, phae, avc from agudezavisual where idojo = 2 and idconsulta = %s;"
@@ -2068,6 +2079,15 @@ def ver(idpaciente):
 		filtrolent = request.form["filtrolent"]
 		colorlent = request.form["colorlent"]
 		ambliopia = request.form["ambliopia"]
+		lapsotiempo = request.form["lapsotiempo"]
+		try:
+			ambliopiaoi = request.form["ambliopiaoi"]
+		except:
+			ambliopiaoi = 0
+		try:
+			ambliopiaod = request.form["ambliopiaod"]
+		except:
+			ambliopiaod = 0
 		ametropia = request.form["ametropia"]
 		ametropiaoi = request.form["ametropiaoi"]
 		if len(ambliopia) < 1:
@@ -2185,8 +2205,8 @@ def ver(idpaciente):
 					cursor.execute(consulta, (idconsulta, tipolent, materiallent, filtrolent, colorlent, lentedetalladolent))
 
 					#consulta
-					consulta = "update consulta set idusolen=%s, proximacita=%s, dnp=%s,dnp1=%s, add1=%s, add2=%s, add3=%s, add11=%s, add22=%s, add33=%s, aprobado=1, iduser=%s, dnp2=%s, dnp3=%s, ojoambliopia=%s, emetropia=%s, antimetropia=%s, tipoametropia=%s, anisometropia=%s, patologiaocular=%s, lentesoftalmicos=%s, lentescontacto=%s, refoftalmologica=%s, farmaco=%s, motivoconsulta=%s, ultimaevmes=%s, ultimaevanio=%s, tiempolen=%s, tipoametropiaoi=%s, referenciaoftal=%s where idconsulta = %s;"
-					cursor.execute(consulta, (usolent, proxicita, dnp, dnp1, add1, add2, add3, add11, add22, add33, session['iduser1'], dnp2, dnp3, ambliopia, emetropia, antimetropia, ametropia, anisometropia, patologiaoculartext, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, motivoconsulta, ultimaevmes, ultimaevanio, tiempolentes, ametropiaoi, recreferencia, idconsulta))
+					consulta = "update consulta set idusolen=%s, proximacita=%s, dnp=%s,dnp1=%s, add1=%s, add2=%s, add3=%s, add11=%s, add22=%s, add33=%s, aprobado=1, iduser=%s, dnp2=%s, dnp3=%s, ojoambliopia=%s, emetropia=%s, antimetropia=%s, tipoametropia=%s, anisometropia=%s, patologiaocular=%s, lentesoftalmicos=%s, lentescontacto=%s, refoftalmologica=%s, farmaco=%s, motivoconsulta=%s, ultimaevmes=%s, ultimaevanio=%s, tiempolen=%s, tipoametropiaoi=%s, referenciaoftal=%s, ambliopiaoi=%s, ambliopiaod=%s, periodotiempo=%s where idconsulta = %s;"
+					cursor.execute(consulta, (usolent, proxicita, dnp, dnp1, add1, add2, add3, add11, add22, add33, session['iduser1'], dnp2, dnp3, ambliopia, emetropia, antimetropia, ametropia, anisometropia, patologiaoculartext, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, motivoconsulta, ultimaevmes, ultimaevanio, tiempolentes, ametropiaoi, recreferencia, ambliopiaoi, ambliopiaod, lapsotiempo, idconsulta))
 
 					#gotas
 					consulta = "insert into recetagotero(idconsulta, medicamento1, descripcion1, medicamento2, descripcion2) values(%s,%s,%s,%s,%s)"
@@ -2241,7 +2261,7 @@ def ver(idpaciente):
 	meses=meses, usolen=usolen, enfermedades=enfermedades, nervos=nervos, mms=mms, numeros=numeros, 
 	relva=relva, tipolen=tipolen, materiallen=materiallen, filtrolen=filtrolen, colorlen=colorlen,
 	dataojo=dataojo, dataametropia=dataametropia, lentedetalladolen=lentedetalladolen, haynew=haynew, 
-	ingresconsultas=ingresconsultas, conteo=conteo, listconsultas=listconsultas, new_date=new_date)
+	ingresconsultas=ingresconsultas, conteo=conteo, listconsultas=listconsultas, new_date=new_date, new_date1=new_date1)
 
 @app.route("/crearusuario", methods=['GET', 'POST'])
 def crearusuario():

@@ -429,7 +429,16 @@
             <table>
                 <tr class="fondoblanco">
                     <th><label for="proxcita">Próxima Cita:</label></th>
-                    <td colspan="5"><input type="date" id="proxicita" name="proxicita" value="{{dataconsulta[0][5]}}"></td>
+                    <td colspan="5">
+                        <select id="lapsotiempo" class="inputtext" name="lapsotiempo">
+                            <option value="6 meses" selected>6 meses</option>
+                            {% if dataconsulta[0][32] == '12 meses' %}
+                            <option value="12 meses" selected>12 meses</option>
+                            {% else %}
+                            <option value="12 meses">12 meses</option>
+                            {% endif %}
+                        </select>
+                        <input type="date" id="proxicita" name="proxicita" value="{{dataconsulta[0][5]}}"></td>
                 </tr>
                 <tr class="fondoblanco">
                     <th><label for="usolent">Uso Lentes:</label></th>
@@ -724,7 +733,7 @@
                 <tr class="fondoblanco">
                     <th rowspan="3"><label for="diagnostico">Diagnóstico:</label></th>
                     <td colspan="2">
-                        <select name="ambliopia" id="ambliopia" class="inputtext1" required>
+                        <select name="ambliopia" id="ambliopia" class="inputtext1" onchange="ojosambliopia()" required>
                             <option value="">----Ambliopía----</option>
                             <option value="0" selected>Ninguno</option>
                             {% for i in dataojo %}
@@ -735,6 +744,8 @@
                             {% endif %}
                             {% endfor %}
                         </select>
+                        <input type="text" name="ambliopiaoi" id="ambliopiaoi" class="inputtext1" placeholder="   Ambliopía OI" value="{{dataconsulta[0][30]}}" disabled>
+                        <input type="text" name="ambliopiaod" id="ambliopiaod" class="inputtext1" placeholder="   Ambliopía OD" value="{{dataconsulta[0][31]}}" disabled>
                     </td>
                     <td colspan="2">
                         <select name="ametropia" id="ametropia" class="inputtext1">
@@ -871,6 +882,25 @@
         </form>
       </div>
       <script type="text/javascript">
+        window.onload = function(){
+            ojosambliopia();
+        }
+        function ojosambliopia(){
+            var select = document.getElementById('ambliopia')
+            if (select.value == 0){
+                document.getElementById('ambliopiaoi').disabled = true
+                document.getElementById('ambliopiaod').disabled = true
+            }else if (select.value == 1) {
+                document.getElementById('ambliopiaoi').disabled = false
+                document.getElementById('ambliopiaod').disabled = true
+            }else if (select.value == 2) {
+                document.getElementById('ambliopiaoi').disabled = true
+                document.getElementById('ambliopiaod').disabled = false
+            }else if (select.value == 3) {
+                document.getElementById('ambliopiaoi').disabled = false
+                document.getElementById('ambliopiaod').disabled = false
+            }
+        }
         function colorespanel(codpanel){
                 codpanel = parseInt(codpanel)
                 for(var i = 0; i<=3;i++){

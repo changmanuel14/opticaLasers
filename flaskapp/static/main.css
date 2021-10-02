@@ -86,6 +86,10 @@ td, th {
   font-size: 30px;
 }
 
+.cursiva {
+  font-family: "Brush Script MT"
+}
+
 .tablacuadre td, th {
   font-size: 16px;
   border: 0px solid #dddddd;
