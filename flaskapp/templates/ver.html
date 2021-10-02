@@ -68,7 +68,7 @@
                 </tr>
                 <tr>
                     <th><label for="tiempolentes">Tiempo utilizando lentes</label></th>
-                    <td><input type="text" id="tiempolentesextra" name="tiempolentesextra" value="{{ingresconsultas[i][2][0][11]}}" class="inputtext"disabled></td>
+                    <td><input type="text" id="tiempolentesextra" name="tiempolentesextra" value="{{ingresconsultas[i][0][0][11]}}" class="inputtext"disabled></td>
                 </tr>
             </table><br>
             <table>
@@ -741,7 +741,7 @@
                 <tr class="fondoblanco">
                     <th rowspan="3"><label for="diagnostico">Diagnóstico:</label></th>
                     <td colspan="2">
-                        <select name="ambliopia" id="ambliopia" class="inputtext1" disabled>
+                        <select name="ambliopia" id="ambliopiaextra" class="inputtext1" disabled>
                             <option value="">Ambliopía</option>
                             <option value="0" selected>Ninguno</option>
                             {% for j in dataojo %}
@@ -1273,7 +1273,7 @@
                 </tr>
                 <tr class="fondoblanco">
                     <th><label for="usolent">Uso Lentes:</label></th>
-                    <td colspan="5"><select name="usolent" id="usolent" class="inputtext" required>
+                    <td colspan="5"><select name="usolent" id="usolent" class="inputtext">
                         <option value="">Seleccione uso</option>
                         {% for i in usolen %}
                         <option value="{{i[0]}}">{{i[1]}}</option>
@@ -1282,7 +1282,7 @@
                 </tr>
                 <tr class="fondoblanco">
                     <th><label for="lenrecom">Lente Recomendado:</label></th>
-                    <td><select name="tipolent" id="tipolent" class="inputtext1" required>
+                    <td><select name="tipolent" id="tipolent" class="inputtext1">
                         <option value="">Seleccione tipo</option>
                         {% for i in tipolen %}
                         <option value="{{i[0]}}">{{i[1]}}</option>
@@ -1294,19 +1294,19 @@
                         <option value="{{i[0]}}">{{i[1]}}</option>
                         {% endfor %}
                     </select></td>
-                    <td><select name="materiallent" id="materiallent" class="inputtext1" required>
+                    <td><select name="materiallent" id="materiallent" class="inputtext1">
                         <option value="">Seleccione material</option>
                         {% for i in materiallen %}
                         <option value="{{i[0]}}">{{i[1]}}</option>
                         {% endfor %}
                     </select></td>
-                    <td><select name="filtrolent" id="filtrolent" class="inputtext1" required>
+                    <td><select name="filtrolent" id="filtrolent" class="inputtext1">
                         <option value="">Seleccione filtro</option>
                         {% for i in filtrolen %}
                         <option value="{{i[0]}}">{{i[1]}}</option>
                         {% endfor %}
                     </select></td>
-                    <td><select name="colorlent" id="colorlent" class="inputtext1" required>
+                    <td><select name="colorlent" id="colorlent" class="inputtext1">
                         <option value="">Seleccione color</option>
                         {% for i in colorlen %}
                         <option value="{{i[0]}}">{{i[1]}}</option>
@@ -1504,7 +1504,7 @@
                     <th rowspan="3"><label for="diagnostico">Diagnóstico:</label></th>
                     <td colspan="2">
                         <select name="ambliopia" id="ambliopia" class="inputtext1" onchange="ojosambliopia()">
-                            <option value="">-----Ambliopía-----</option>
+                            <option>-----Ambliopía-----</option>
                             <option value="0">Ninguno</option>
                             {% for i in dataojo %}
                             <option value="{{i[0]}}">{{i[1]}}</option>
@@ -1657,7 +1657,7 @@
                 </tr>
                 <tr>
                     <th><label for="tiempolentes">Tiempo utilizando lentes</label></th>
-                    <td><input type="text" id="tiempolentesextra" name="tiempolentesextra" value="{{ingresconsultas[i][2][0][11]}}" class="inputtext"disabled></td>
+                    <td><input type="text" id="tiempolentesextra" name="tiempolentesextra" value="{{ingresconsultas[i][0][0][11]}}" class="inputtext"disabled></td>
                 </tr>
             </table><br>
             <table>
@@ -2330,7 +2330,7 @@
                 <tr class="fondoblanco">
                     <th rowspan="3"><label for="diagnostico">Diagnóstico:</label></th>
                     <td colspan="2">
-                        <select name="ambliopia" id="ambliopia" class="inputtext1" disabled>
+                        <select name="ambliopia" id="ambliopiaextra" class="inputtext1" disabled>
                             <option value="">Ambliopía</option>
                             <option value="0" selected>Ninguno</option>
                             {% for j in dataojo %}
@@ -2482,16 +2482,21 @@
       <script type="text/javascript">
         function ojosambliopia(){
             var select = document.getElementById('ambliopia')
+            console.log(select.value)
             if (select.value == 0){
+                console.log('Entronin')
                 document.getElementById('ambliopiaoi').disabled = true
                 document.getElementById('ambliopiaod').disabled = true
             }else if (select.value == 1) {
+                console.log('Entroiz')
                 document.getElementById('ambliopiaoi').disabled = false
                 document.getElementById('ambliopiaod').disabled = true
             }else if (select.value == 2) {
+                console.log('Entroder')
                 document.getElementById('ambliopiaoi').disabled = true
                 document.getElementById('ambliopiaod').disabled = false
             }else if (select.value == 3) {
+                console.log('Entroam')
                 document.getElementById('ambliopiaoi').disabled = false
                 document.getElementById('ambliopiaod').disabled = false
             }

@@ -237,7 +237,7 @@ def nuevaconsulta():
 		profesion = request.form["profesion"]
 		direccion = request.form["direccion"]
 		rutafoto = request.form["rutafoto"]
-		aux = r'C:\\Users\\INTEL\\Documents\\OpticaLasers\\opticaLasers\\flaskapp\\static\\fotografias\\' + str(nombre1) + str(nombre2) + str(apellido1) + str(apellido2) + str(cui) + str(fechafoto) +'.jpeg'
+		aux = r'C:\\Users\\DELL\\Documents\\sistemaoptica\\flaskapp\\static\\fotografias\\' + str(nombre1) + str(nombre2) + str(apellido1) + str(apellido2) + str(cui) + str(fechafoto) +'.jpeg'
 		urllib.request.urlretrieve(rutafoto, aux)
 		#ingreso paciente y estudiante
 		try:
@@ -1344,7 +1344,6 @@ def ver(idpaciente):
 				listconsultas = cursor.fetchall()
 				conteo = len(listconsultas)
 				consulta = "SELECT idconsulta from consulta where idpaciente = "+ str(idpaciente) + " and fecha = '"+ str(dateac) + "' and aprobado = 0 order by fecha asc;"
-				print(consulta)
 				cursor.execute(consulta)
 				dateaux = cursor.fetchall()
 				if len(dateaux) > 0:
@@ -1385,11 +1384,10 @@ def ver(idpaciente):
 					paciente = cursor.fetchall()
 					paciente = paciente[0]
 					ingreconsulta.append(paciente)
-					print(contaux)
-					print(haynew)
-					print(conteo)
+					#print(contaux)
+					#print(haynew)
+					#print(conteo)
 					if (contaux != conteo - 1) or ((contaux == conteo - 1) and (haynew == 0)):
-						print("entró")
 						consulta = "SELECT oftalmologicos, familiares, glaucoma, alergicas, idantecedentes from antecedentes where idpaciente = %s;"
 						cursor.execute(consulta, idpaciente)
 						antecedentes = cursor.fetchone()
@@ -1411,7 +1409,6 @@ def ver(idpaciente):
 						consulta = "SELECT tipo, material, filtro, color, lentedetallado from lenterecomendado where idconsulta = %s;"
 						cursor.execute(consulta, i[0])
 						lenterecomendado = cursor.fetchall()
-						print(lenterecomendado[0][4])
 						ingreconsulta.append(lenterecomendado)
 						av = []
 						consulta = "SELECT avl, phae, avc from agudezavisual where idojo = 2 and idconsulta = %s;"
@@ -1498,7 +1495,6 @@ def ver(idpaciente):
 						gotas = cursor.fetchone()
 						ingreconsulta.append(gotas)
 					ingresconsultas.append(ingreconsulta)
-
 			finally:
 				conexion.close()
 		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
@@ -2078,6 +2074,16 @@ def ver(idpaciente):
 		materiallent = request.form["materiallent"]
 		filtrolent = request.form["filtrolent"]
 		colorlent = request.form["colorlent"]
+		if len(usolent) < 1:
+			usolent = 6
+		if len(tipolent) < 1:
+			tipolent = 7
+		if len(materiallent) < 1:
+			materiallent = 5
+		if len(filtrolent) < 1:
+			filtrolent = 13
+		if len(colorlent) < 1:
+			colorlent = 10
 		ambliopia = request.form["ambliopia"]
 		lapsotiempo = request.form["lapsotiempo"]
 		try:
@@ -2308,7 +2314,7 @@ def recetalentespdf(idconsulta):
 				cursor.execute(consulta, idconsulta)
 				aux = cursor.fetchone()
 				rf.append(aux)
-				consulta = "SELECT p.nombre1, p.nombre2, p.apellido1, p.apellido2, DATE_FORMAT(c.fecha,'%d/%m/%Y'), u.uso, DATE_FORMAT(c.proximacita,'%d/%m/%Y'), c.dnp, c.add11, c.add22, c.add33, o.nombre, o.apellido from paciente p inner join consulta c on p.idpaciente = c.idpaciente inner join usolen u on u.idusolen = c.idusolen inner join user o ON o.iduser = c.iduser where idconsulta = " + str(idconsulta) + ";"
+				consulta = "SELECT p.nombre1, p.nombre2, p.apellido1, p.apellido2, DATE_FORMAT(c.fecha,'%d/%m/%Y'), u.uso, DATE_FORMAT(c.proximacita,'%d/%m/%Y'), c.dnp, c.add11, c.add22, c.add33, o.nombre, o.apellido, c.periodotiempo from paciente p inner join consulta c on p.idpaciente = c.idpaciente inner join usolen u on u.idusolen = c.idusolen inner join user o ON o.iduser = c.iduser where idconsulta = " + str(idconsulta) + ";"
 				print(consulta)
 				cursor.execute(consulta)
 				dataconsulta = cursor.fetchall()
@@ -2320,7 +2326,7 @@ def recetalentespdf(idconsulta):
 	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
 		print("Ocurrió un error al conectar: ", e)
 	rendered = render_template('recetalentespdf.html', title="Receta lente", dataconsulta=dataconsulta, rf = rf, lenterecomendado=lenterecomendado)
-	options = {'enable-local-file-access': None, 'page-size': 'A6', 'orientation': 'Landscape', 'zoom': '0.6'}
+	options = {'enable-local-file-access': None, 'page-size': 'A6', 'orientation': 'Landscape', 'zoom': '0.5'}
 	config = pdfkit.configuration(wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
 	pdf = pdfkit.from_string(rendered, False, configuration=config, options=options)
 	response = make_response(pdf)
