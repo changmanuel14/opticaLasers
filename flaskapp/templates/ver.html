@@ -739,7 +739,8 @@
             <br>
             <table>
                 <tr class="fondoblanco">
-                    <th rowspan="3"><label for="diagnostico">Diagnóstico:</label></th>
+                    <th rowspan="5"><label for="diagnostico">Diagnóstico:</label></th>
+                    <th rowspan="3">Estado Refractivo</th>
                     <td colspan="2">
                         <select name="ambliopia" id="ambliopiaextra" class="inputtext1" disabled>
                             <option value="">Ambliopía</option>
@@ -756,7 +757,7 @@
                         <input type="text" name="ambliopiaod1" id="ambliopiaod1" class="inputtext1" placeholder="   Ambliopía OD" value="{{ingresconsultas[i][0][0][31]}}" disabled>
                     </td>
                     <td colspan="3">
-                        <select name="ametropia" id="ametropia" class="inputtext1" disabled>
+                        <select name="ametropia1" id="ametropia1" class="inputtext1" disabled>
                             <option value="">Ametropía OD</option>
                             <option value="0" selected>Ninguno</option>
                             {% for j in dataametropia %}
@@ -767,7 +768,7 @@
                             {% endif %}
                             {% endfor %}
                         </select>
-                        <select name="ametropiaoi" id="ametropiaoi" class="inputtext1" disabled>
+                        <select name="ametropiaoi1" id="ametropiaoi1" class="inputtext1" disabled>
                             <option value="">Ametropía OI</option>
                             <option value="0" selected>Ninguno</option>
                             {% for j in dataametropia %}
@@ -783,52 +784,73 @@
                 <tr class="fondoblanco">
                     <td colspan="2">
                         {% if ingresconsultas[i][0][0][18] == 0 %}
-                        <label><input type="checkbox" id="emetropia" name="emetropia" value="1" disabled><strong>  Emetropía</strong></label>
+                        <label><input type="checkbox" id="emetropia1" name="emetropia1" value="1" disabled><strong>  Emetropía</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="emetropia" name="emetropia" value="1" checked disabled><strong>  Emetropía</strong></label>
+                        <label><input type="checkbox" id="emetropia1" name="emetropia1" value="1" checked disabled><strong>  Emetropía</strong></label>
                         {% endif %}
                     </td>
                     <td colspan="3">
                         {% if ingresconsultas[i][0][0][19] == 0 %}
-                        <label><input type="checkbox" id="antimetropia" name="antimetropia" value="1" disabled><strong>  Antimetropía</strong></label>
+                        <label><input type="checkbox" id="antimetropia1" name="antimetropia1" value="1" disabled><strong>  Antimetropía</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="antimetropia" name="antimetropia" value="1" checked disabled><strong>  Antimetropía</strong></label>
+                        <label><input type="checkbox" id="antimetropia1" name="antimetropia1" value="1" checked disabled><strong>  Antimetropía</strong></label>
                         {% endif %}
                     </td>
                 </tr>
                 <tr class="fondoblanco">
                     <td colspan="2">
                         {% if ingresconsultas[i][0][0][20] == 0 %}
-                        <label><input type="checkbox" id="anisometropia" name="anisometropia" value="1" disabled><strong>  Anisometropia</strong></label>
+                        <label><input type="checkbox" id="anisometropia1" name="anisometropia1" value="1" disabled><strong>  Anisometropia</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="anisometropia" name="anisometropia" value="1" checked disabled><strong>  Anisometropia</strong></label>
+                        <label><input type="checkbox" id="anisometropia1" name="anisometropia1" value="1" checked disabled><strong>  Anisometropia</strong></label>
                         {% endif %}
                     </td>
                     <td colspan="3">
-                        {% if ingresconsultas[i][0][0][21] == '0' %}
-                        <label><input type="checkbox" id="patologiaocular" name="patologiaocular" value="1" disabled><strong>  Patología Ocular</strong></label><br>
-                        <input type="text" class="inputtext1" id="patologiaoculartext" name="patologiaoculartext" disabled>
+                        {% if ingresconsultas[i][0][0][33] == 0 %}
+                        <label><input type="checkbox" id="estrabismo1" name="estrabismo1" value="1" disabled><strong>  Estrabismo</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="patologiaocular" name="patologiaocular" value="1" checked disabled><strong>  Patología Ocular</strong></label><br>
-                        <input type="text" class="inputtext1" id="patologiaoculartext" name="patologiaoculartext" value="{{ingresconsultas[i][0][0][21]}}" disabled>
+                        <label><input type="checkbox" id="estrabismo1" name="estrabismo1" value="1" checked disabled><strong>  Estrabismo</strong></label>
                         {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th rowspan="2">Salud Ocular</th>
+                    <td colspan="2">
+                        {% if ingresconsultas[i][0][0][34] == 0 %}
+                        <label><input type="checkbox" id="estadosalud1" name="estadosalud1" value="1" disabled><strong>  Estado de Salud Ocular Saludable A-O</strong></label>
+                        {% else %}
+                        <label><input type="checkbox" id="estadosalud1" name="estadosalud1" value="1" checked disabled><strong>  Estado de Salud Ocular Saludable A-O</strong></label>
+                        {% endif %}
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        {% if ingresconsultas[i][0][0][21] == '0' %}
+                        <label><input type="checkbox" id="patologiaocular1" name="patologiaocular1" value="1" disabled><strong>  Patología Ocular</strong></label><br>
+                        {% else %}
+                        <label><input type="checkbox" id="patologiaocular1" name="patologiaocular1" value="1" checked disabled><strong>  Patología Ocular</strong></label><br>
+                        {% endif %}
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="inputtext1" id="patologiaoculartext1" name="patologiaoculartext1" value="{{ingresconsultas[i][0][0][21]}}" disabled>
                     </td>
                 </tr>
                 <tr class="fondoblanco">
                     <th rowspan="2"><label for="tratamiento">Tratamiento:</label></th>
                     <td colspan="2">
                         {% if ingresconsultas[i][0][0][22] == 0 %}
-                        <label><input type="checkbox" id="lentesoftalmicos" name="lentesoftalmicos" value="1" disabled><strong>  Lentes Oftálmicos</strong></label>
+                        <label><input type="checkbox" id="lentesoftalmicos1" name="lentesoftalmicos1" value="1" disabled><strong>  Lentes Oftálmicos</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="lentesoftalmicos" name="lentesoftalmicos" value="1" checked disabled><strong>  Lentes Oftálmicos</strong></label>
+                        <label><input type="checkbox" id="lentesoftalmicos1" name="lentesoftalmicos1" value="1" checked disabled><strong>  Lentes Oftálmicos</strong></label>
                         {% endif %}
                        
                     </td>
                     <td colspan="3">
                         {% if ingresconsultas[i][0][0][23] == 0 %}
-                        <label><input type="checkbox" id="lentescontacto" name="lentescontacto" value="1" disabled><strong>  Lentes de Contacto</strong></label>
+                        <label><input type="checkbox" id="lentescontacto1" name="lentescontacto1" value="1" disabled><strong>  Lentes de Contacto</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="lentescontacto" name="lentescontacto" value="1" checked disabled><strong>  Lentes de Contacto</strong></label>
+                        <label><input type="checkbox" id="lentescontacto1" name="lentescontacto1" value="1" checked disabled><strong>  Lentes de Contacto</strong></label>
                         {% endif %}
                         
                     </td>
@@ -836,17 +858,17 @@
                 <tr class="fondoblanco">
                     <td colspan="2">
                         {% if ingresconsultas[i][0][0][24] == 0 %}
-                        <label><input type="checkbox" id="refoftalmologica" name="refoftalmologica" value="1" disabled><strong>  Referencia Oftalmológica</strong></label>
+                        <label><input type="checkbox" id="refoftalmologica1" name="refoftalmologica1" value="1" disabled><strong>  Referencia Oftalmológica</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="refoftalmologica" name="refoftalmologica" value="1" checked disabled><strong>  Referencia Oftalmológica</strong></label>
+                        <label><input type="checkbox" id="refoftalmologica1" name="refoftalmologica1" value="1" checked disabled><strong>  Referencia Oftalmológica</strong></label>
                         {% endif %}
                         
                     </td>
                     <td colspan="3">
                         {% if ingresconsultas[i][0][0][25] == 0 %}
-                        <label><input type="checkbox" id="farmaco" name="farmaco" value="1" disabled><strong>  Fármaco</strong></label>
+                        <label><input type="checkbox" id="farmaco1" name="farmaco1" value="1" disabled><strong>  Fármaco</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="farmaco" name="farmaco" value="1" checked disabled><strong>  Fármaco</strong></label>
+                        <label><input type="checkbox" id="farmaco1" name="farmaco1" value="1" checked disabled><strong>  Fármaco</strong></label>
                         {% endif %}
                         
                     </td>
@@ -1501,10 +1523,11 @@
             <h3>Diagnóstico y Tratamiento</h3>
             <table>
                 <tr class="fondoblanco">
-                    <th rowspan="3"><label for="diagnostico">Diagnóstico:</label></th>
+                    <th rowspan="5"><label for="diagnostico">Diagnóstico:</label></th>
+                    <th rowspan="3">Estado Refractivo</th>
                     <td colspan="2">
                         <select name="ambliopia" id="ambliopia" class="inputtext1" onchange="ojosambliopia()">
-                            <option>-----Ambliopía-----</option>
+                            <option value="0">-----Ambliopía-----</option>
                             <option value="0">Ninguno</option>
                             {% for i in dataojo %}
                             <option value="{{i[0]}}">{{i[1]}}</option>
@@ -1543,7 +1566,21 @@
                         <label><input type="checkbox" id="anisometropia" name="anisometropia" value="1"><strong>  Anisometropia</strong></label>
                     </td>
                     <td colspan="3">
+                        <label><input type="checkbox" id="estrabismo" name="estrabismo" value="1"><strong>  Estrabismo</strong></label><br>
+                    </td>
+                </tr>
+                <tr>
+                    <th rowspan="2">Salud Ocular</th>
+                    <td colspan="3">
+                        <label><input type="checkbox" id="estadosalud" name="estadosalud" value="1"><strong>  Estado de Salud Ocular Saludable A-O</strong></label><br>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
                         <label><input type="checkbox" id="patologiaocular" name="patologiaocular" value="1" onclick="hdpatologiaocular()"><strong>  Patología Ocular</strong></label><br>
+                    </td>
+                    <td colspan="2">
                         <input type="text" class="inputtext1" id="patologiaoculartext" name="patologiaoculartext" disabled>
                     </td>
                 </tr>
@@ -2328,7 +2365,8 @@
             <br>
             <table>
                 <tr class="fondoblanco">
-                    <th rowspan="3"><label for="diagnostico">Diagnóstico:</label></th>
+                    <th rowspan="5"><label for="diagnostico">Diagnóstico:</label></th>
+                    <th rowspan="3">Estado Refractivo</th>
                     <td colspan="2">
                         <select name="ambliopia" id="ambliopiaextra" class="inputtext1" disabled>
                             <option value="">Ambliopía</option>
@@ -2341,11 +2379,11 @@
                             {% endif %}
                             {% endfor %}
                         </select>
-                        <input type="text" name="ambliopiaoi2" id="ambliopiaoi2" class="inputtext1" placeholder="   Ambliopía OI" value="{{ingresconsultas[i][0][0][30]}}" disabled>
-                        <input type="text" name="ambliopiaod2" id="ambliopiaod2" class="inputtext1" placeholder="   Ambliopía OD" value="{{ingresconsultas[i][0][0][31]}}" disabled>
+                        <input type="text" name="ambliopiaoi1" id="ambliopiaoi1" class="inputtext1" placeholder="   Ambliopía OI" value="{{ingresconsultas[i][0][0][30]}}" disabled>
+                        <input type="text" name="ambliopiaod1" id="ambliopiaod1" class="inputtext1" placeholder="   Ambliopía OD" value="{{ingresconsultas[i][0][0][31]}}" disabled>
                     </td>
                     <td colspan="3">
-                        <select name="ametropia" id="ametropia" class="inputtext1" disabled>
+                        <select name="ametropia1" id="ametropia1" class="inputtext1" disabled>
                             <option value="">Ametropía OD</option>
                             <option value="0" selected>Ninguno</option>
                             {% for j in dataametropia %}
@@ -2356,7 +2394,7 @@
                             {% endif %}
                             {% endfor %}
                         </select>
-                        <select name="ametropiaoi" id="ametropiaoi" class="inputtext1" disabled>
+                        <select name="ametropiaoi1" id="ametropiaoi1" class="inputtext1" disabled>
                             <option value="">Ametropía OI</option>
                             <option value="0" selected>Ninguno</option>
                             {% for j in dataametropia %}
@@ -2372,52 +2410,73 @@
                 <tr class="fondoblanco">
                     <td colspan="2">
                         {% if ingresconsultas[i][0][0][18] == 0 %}
-                        <label><input type="checkbox" id="emetropia" name="emetropia" value="1" disabled><strong>  Emetropía</strong></label>
+                        <label><input type="checkbox" id="emetropia1" name="emetropia1" value="1" disabled><strong>  Emetropía</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="emetropia" name="emetropia" value="1" checked disabled><strong>  Emetropía</strong></label>
+                        <label><input type="checkbox" id="emetropia1" name="emetropia1" value="1" checked disabled><strong>  Emetropía</strong></label>
                         {% endif %}
                     </td>
                     <td colspan="3">
                         {% if ingresconsultas[i][0][0][19] == 0 %}
-                        <label><input type="checkbox" id="antimetropia" name="antimetropia" value="1" disabled><strong>  Antimetropía</strong></label>
+                        <label><input type="checkbox" id="antimetropia1" name="antimetropia1" value="1" disabled><strong>  Antimetropía</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="antimetropia" name="antimetropia" value="1" checked disabled><strong>  Antimetropía</strong></label>
+                        <label><input type="checkbox" id="antimetropia1" name="antimetropia1" value="1" checked disabled><strong>  Antimetropía</strong></label>
                         {% endif %}
                     </td>
                 </tr>
                 <tr class="fondoblanco">
                     <td colspan="2">
                         {% if ingresconsultas[i][0][0][20] == 0 %}
-                        <label><input type="checkbox" id="anisometropia" name="anisometropia" value="1" disabled><strong>  Anisometropia</strong></label>
+                        <label><input type="checkbox" id="anisometropia1" name="anisometropia1" value="1" disabled><strong>  Anisometropia</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="anisometropia" name="anisometropia" value="1" checked disabled><strong>  Anisometropia</strong></label>
+                        <label><input type="checkbox" id="anisometropia1" name="anisometropia1" value="1" checked disabled><strong>  Anisometropia</strong></label>
                         {% endif %}
                     </td>
                     <td colspan="3">
-                        {% if ingresconsultas[i][0][0][21] == '0' %}
-                        <label><input type="checkbox" id="patologiaocular" name="patologiaocular" value="1" disabled><strong>  Patología Ocular</strong></label><br>
-                        <input type="text" class="inputtext1" id="patologiaoculartext" name="patologiaoculartext" disabled>
+                        {% if ingresconsultas[i][0][0][33] == 0 %}
+                        <label><input type="checkbox" id="estrabismo1" name="estrabismo1" value="1" disabled><strong>  Estrabismo</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="patologiaocular" name="patologiaocular" value="1" checked disabled><strong>  Patología Ocular</strong></label><br>
-                        <input type="text" class="inputtext1" id="patologiaoculartext" name="patologiaoculartext" value="{{ingresconsultas[i][0][0][21]}}" disabled>
+                        <label><input type="checkbox" id="estrabismo1" name="estrabismo1" value="1" checked disabled><strong>  Estrabismo</strong></label>
                         {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th rowspan="2">Salud Ocular</th>
+                    <td colspan="2">
+                        {% if ingresconsultas[i][0][0][34] == 0 %}
+                        <label><input type="checkbox" id="estadosalud1" name="estadosalud1" value="1" disabled><strong>  Estado de Salud Ocular Saludable A-O</strong></label>
+                        {% else %}
+                        <label><input type="checkbox" id="estadosalud1" name="estadosalud1" value="1" checked disabled><strong>  Estado de Salud Ocular Saludable A-O</strong></label>
+                        {% endif %}
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        {% if ingresconsultas[i][0][0][21] == '0' %}
+                        <label><input type="checkbox" id="patologiaocular1" name="patologiaocular1" value="1" disabled><strong>  Patología Ocular</strong></label><br>
+                        {% else %}
+                        <label><input type="checkbox" id="patologiaocular1" name="patologiaocular1" value="1" checked disabled><strong>  Patología Ocular</strong></label><br>
+                        {% endif %}
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="inputtext1" id="patologiaoculartext1" name="patologiaoculartext1" value="{{ingresconsultas[i][0][0][21]}}" disabled>
                     </td>
                 </tr>
                 <tr class="fondoblanco">
                     <th rowspan="2"><label for="tratamiento">Tratamiento:</label></th>
                     <td colspan="2">
                         {% if ingresconsultas[i][0][0][22] == 0 %}
-                        <label><input type="checkbox" id="lentesoftalmicos" name="lentesoftalmicos" value="1" disabled><strong>  Lentes Oftálmicos</strong></label>
+                        <label><input type="checkbox" id="lentesoftalmicos1" name="lentesoftalmicos1" value="1" disabled><strong>  Lentes Oftálmicos</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="lentesoftalmicos" name="lentesoftalmicos" value="1" checked disabled><strong>  Lentes Oftálmicos</strong></label>
+                        <label><input type="checkbox" id="lentesoftalmicos1" name="lentesoftalmicos1" value="1" checked disabled><strong>  Lentes Oftálmicos</strong></label>
                         {% endif %}
                        
                     </td>
                     <td colspan="3">
                         {% if ingresconsultas[i][0][0][23] == 0 %}
-                        <label><input type="checkbox" id="lentescontacto" name="lentescontacto" value="1" disabled><strong>  Lentes de Contacto</strong></label>
+                        <label><input type="checkbox" id="lentescontacto1" name="lentescontacto1" value="1" disabled><strong>  Lentes de Contacto</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="lentescontacto" name="lentescontacto" value="1" checked disabled><strong>  Lentes de Contacto</strong></label>
+                        <label><input type="checkbox" id="lentescontacto1" name="lentescontacto1" value="1" checked disabled><strong>  Lentes de Contacto</strong></label>
                         {% endif %}
                         
                     </td>
@@ -2425,17 +2484,17 @@
                 <tr class="fondoblanco">
                     <td colspan="2">
                         {% if ingresconsultas[i][0][0][24] == 0 %}
-                        <label><input type="checkbox" id="refoftalmologica" name="refoftalmologica" value="1" disabled><strong>  Referencia Oftalmológica</strong></label>
+                        <label><input type="checkbox" id="refoftalmologica1" name="refoftalmologica1" value="1" disabled><strong>  Referencia Oftalmológica</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="refoftalmologica" name="refoftalmologica" value="1" checked disabled><strong>  Referencia Oftalmológica</strong></label>
+                        <label><input type="checkbox" id="refoftalmologica1" name="refoftalmologica1" value="1" checked disabled><strong>  Referencia Oftalmológica</strong></label>
                         {% endif %}
                         
                     </td>
                     <td colspan="3">
                         {% if ingresconsultas[i][0][0][25] == 0 %}
-                        <label><input type="checkbox" id="farmaco" name="farmaco" value="1" disabled><strong>  Fármaco</strong></label>
+                        <label><input type="checkbox" id="farmaco1" name="farmaco1" value="1" disabled><strong>  Fármaco</strong></label>
                         {% else %}
-                        <label><input type="checkbox" id="farmaco" name="farmaco" value="1" checked disabled><strong>  Fármaco</strong></label>
+                        <label><input type="checkbox" id="farmaco1" name="farmaco1" value="1" checked disabled><strong>  Fármaco</strong></label>
                         {% endif %}
                         
                     </td>

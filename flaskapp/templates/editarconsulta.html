@@ -731,7 +731,8 @@
             <br>
             <table>
                 <tr class="fondoblanco">
-                    <th rowspan="3"><label for="diagnostico">Diagnóstico:</label></th>
+                    <th rowspan="5"><label for="diagnostico">Diagnóstico:</label></th>
+                    <th rowspan="3">Estado Refractivo</th>
                     <td colspan="2">
                         <select name="ambliopia" id="ambliopia" class="inputtext1" onchange="ojosambliopia()" required>
                             <option value="">----Ambliopía----</option>
@@ -747,7 +748,7 @@
                         <input type="text" name="ambliopiaoi" id="ambliopiaoi" class="inputtext1" placeholder="   Ambliopía OI" value="{{dataconsulta[0][30]}}" disabled>
                         <input type="text" name="ambliopiaod" id="ambliopiaod" class="inputtext1" placeholder="   Ambliopía OD" value="{{dataconsulta[0][31]}}" disabled>
                     </td>
-                    <td colspan="2">
+                    <td colspan="3">
                         <select name="ametropia" id="ametropia" class="inputtext1">
                             <option value="">----Ametropía----</option>
                             <option value="0" selected>Ninguno</option>
@@ -786,7 +787,6 @@
                         {% else %}
                         <label><input type="checkbox" id="antimetropia" name="antimetropia" value="1" checked><strong>  Antimetropía</strong></label>
                         {% endif %}
-                        
                     </td>
                 </tr>
                 <tr class="fondoblanco">
@@ -797,14 +797,35 @@
                         <label><input type="checkbox" id="anisometropia" name="anisometropia" value="1" checked><strong>  Anisometropia</strong></label>
                         {% endif %}
                     </td>
+                    <td colspan="3">
+                        {% if dataconsulta[0][33] == 0 %}
+                        <label><input type="checkbox" id="estrabismo" name="estrabismo" value="1"><strong>  Estrabismo</strong></label>
+                        {% else %}
+                        <label><input type="checkbox" id="estrabismo" name="estrabismo" value="1" checked><strong>  Estrabismo</strong></label>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th rowspan="2">Salud Ocular</th>
+                    <td colspan="2">
+                        {% if dataconsulta[0][34] == 0 %}
+                        <label><input type="checkbox" id="estadosalud" name="estadosalud" value="1"><strong>  Estado de Salud Ocular Saludable A-O</strong></label>
+                        {% else %}
+                        <label><input type="checkbox" id="estadosalud" name="estadosalud" value="1" checked><strong>  Estado de Salud Ocular Saludable A-O</strong></label>
+                        {% endif %}
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
                     <td colspan="2">
                         {% if dataconsulta[0][22] == '0' %}
                         <label><input type="checkbox" id="patologiaocular" name="patologiaocular" value="1"><strong>  Patología Ocular</strong></label><br>
-                        <input type="text" class="inputtext1" id="patologiaoculartext" name="patologiaoculartext" disabled>
                         {% else %}
                         <label><input type="checkbox" id="patologiaocular" name="patologiaocular" value="1" checked><strong>  Patología Ocular</strong></label><br>
-                        <input type="text" class="inputtext1" id="patologiaoculartext" name="patologiaoculartext" value="{{dataconsulta[0][22]}}">
                         {% endif %}
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="inputtext1" id="patologiaoculartext" name="patologiaoculartext" value="{{dataconsulta[0][22]}}">
                     </td>
                 </tr>
                 <tr class="fondoblanco">
@@ -817,7 +838,7 @@
                         {% endif %}
                        
                     </td>
-                    <td colspan="2">
+                    <td colspan="3">
                         {% if dataconsulta[0][24] == 0 %}
                         <label><input type="checkbox" id="lentescontacto" name="lentescontacto" value="1"><strong>  Lentes de Contacto</strong></label>
                         {% else %}
@@ -835,7 +856,7 @@
                         {% endif %}
                         
                     </td>
-                    <td colspan="2">
+                    <td colspan="3">
                         {% if dataconsulta[0][26] == 0 %}
                         <label><input type="checkbox" id="farmaco" name="farmaco" value="1"><strong>  Fármaco</strong></label>
                         {% else %}
@@ -845,6 +866,7 @@
                     </td>
                 </tr>
             </table>
+            <br>
             <h6>Datos Gotero</h6>
             <table id="tablegotas" style="display: block;">
                 <tr>
