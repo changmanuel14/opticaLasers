@@ -13,7 +13,7 @@
         {% for i in range(conteo) %}
         <tr>
             <td>{{consultas[i][3]}} {{consultas[i][4]}}, {{consultas[i][1]}} {{consultas[i][2]}}</td>
-            <td>{{fechas[i]}}</td>
+            <td>{{fechas[i][0]}}</td>
             <td><a href="/ver/{{consultas[i][0]}}">Ver datos</a></td>
             <td><a href="/recetas/{{idrecetas[i]}}">Recetas</a></td>
         </tr>

@@ -237,7 +237,7 @@ def nuevaconsulta():
 		profesion = request.form["profesion"]
 		direccion = request.form["direccion"]
 		rutafoto = request.form["rutafoto"]
-		aux = r'C:\\Users\\DELL\\Documents\\sistemaoptica\\flaskapp\\static\\fotografias\\' + str(nombre1) + str(nombre2) + str(apellido1) + str(apellido2) + str(cui) + str(fechafoto) +'.jpeg'
+		aux = r'C:\\Users\\INTEL\\Documents\\OpticaLasers1\\opticaLasers\\flaskapp\\static\\fotografias\\' + str(nombre1) + str(nombre2) + str(apellido1) + str(apellido2) + str(cui) + str(fechafoto) +'.jpeg'
 		urllib.request.urlretrieve(rutafoto, aux)
 		#ingreso paciente y estudiante
 		try:
@@ -364,16 +364,17 @@ def aprobados():
 		conexion = pymysql.connect(host='localhost', user='root', password='database', db='opticadb')
 		try:
 			with conexion.cursor() as cursor:
-				consulta = "SELECT idpaciente, nombre1, nombre2, apellido1, apellido2 from paciente order by apellido1 asc;"
+				consulta = "SELECT idpaciente, nombre1, nombre2, apellido1, apellido2 from paciente order by apellido1 asc, apellido2 asc;"
 				cursor.execute(consulta)
 				consultas = cursor.fetchall()
 				conteo = len(consultas)
 				fechas = []
 				for i in consultas:
-					cons = "Select max(DATE_FORMAT(fecha,'%d/%m/%Y')) from consulta where idpaciente = '"+str(i[0])+"';"
+					cons = "Select DATE_FORMAT(fecha,'%d/%m/%Y') from consulta where idpaciente = '"+str(i[0])+"' order by fecha desc;"
+					print(cons)
 					cursor.execute(cons)
-					data = cursor.fetchall()
-					fechas.append(data[0][0])
+					data = cursor.fetchone()
+					fechas.append(data)
 				idrecetas = []
 				for i in consultas:
 					cons = "Select max(idconsulta) from consulta where idpaciente = '"+str(i[0])+"';"
@@ -1366,6 +1367,30 @@ def ver(idpaciente):
 
 	ingresconsultas = []
 	contaux = 0
+	rf1 = []
+	rf2 = []
+	print("Conteo: ", conteo)
+	if haynew == 1 and conteo > 1:
+		print('entro')
+		try:
+			conexion = pymysql.connect(host='localhost', user='root', password='database', db='opticadb')
+			try:
+				with conexion.cursor() as cursor:
+					consulta = "SELECT esfera1, esfera2, esfera3, cilindro1, cilindro2, cilindro3, eje1, eje2, eje3, prisma1, prisma2, prisma3, avcc1, avcc2, avcc3 from reffin where idojo = 2 and idconsulta = %s;"
+					cursor.execute(consulta, listconsultas[conteo-2][0])
+					aux = cursor.fetchone()
+					rf1.append(aux)
+					consulta = "SELECT esfera1, esfera2, esfera3, cilindro1, cilindro2, cilindro3, eje1, eje2, eje3, prisma1, prisma2, prisma3, avcc1, avcc2, avcc3 from reffin where idojo = 1 and idconsulta = %s;"
+					cursor.execute(consulta, listconsultas[conteo-2][0])
+					aux = cursor.fetchone()
+					rf1.append(aux)
+					consulta = "SELECT idpaciente, ojoambliopia, tipoametropia, idusolen, proximacita, dnp, dnp1, dnp2, dnp3, ultimaevmes, ultimaevanio, tiempolen, add1, add2, add3, add11, add22, add33, emetropia, antimetropia, anisometropia, patologiaocular, lentesoftalmicos, lentescontacto, refoftalmologica, farmaco, DATE_FORMAT(fecha,'%d%m%Y'), motivoconsulta, tipoametropiaoi, referenciaoftal, ambliopiaoi, ambliopiaod, periodotiempo, estrabismo, estadosalud from consulta where idconsulta = "+ str(listconsultas[conteo-2][0]) + ";"
+					cursor.execute(consulta)
+					rf2 = cursor.fetchone()
+			finally:
+				conexion.close()
+		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+			print("Ocurrió un error al conectar: ", e)
 	for i in listconsultas:
 		ingreconsulta = []
 		try:
@@ -1392,9 +1417,6 @@ def ver(idpaciente):
 					paciente = cursor.fetchall()
 					paciente = paciente[0]
 					ingreconsulta.append(paciente)
-					#print(contaux)
-					#print(haynew)
-					#print(conteo)
 					if (contaux != conteo - 1) or ((contaux == conteo - 1) and (haynew == 0)):
 						consulta = "SELECT oftalmologicos, familiares, glaucoma, alergicas, idantecedentes from antecedentes where idpaciente = %s;"
 						cursor.execute(consulta, idpaciente)
@@ -2063,17 +2085,18 @@ def ver(idpaciente):
 		if len(retmacoi) < 1:
 			retmacoi = 0
 		
-
-		file = request.files['file']
-		filename = str(idconsulta) + fechafoto
-		if '.png' in file.filename:
-			filename = filename + '.png'
-		elif '.jpg' in file.filename:
-			filename = filename + '.jpg'
-		elif '.jpeg' in file.filename:
-			filename = filename + '.jpeg'
-		print(filename)
-		file.save(os.path.join("flaskapp\\static\\uploads", filename))
+		try:
+			file = request.files['file']
+			filename = str(idconsulta) + fechafoto
+			if '.png' in file.filename:
+				filename = filename + '.png'
+			elif '.jpg' in file.filename:
+				filename = filename + '.jpg'
+			elif '.jpeg' in file.filename:
+				filename = filename + '.jpeg'
+			file.save(os.path.join("flaskapp\\static\\uploads", filename))
+		except:
+			print('No fotografia')
 
 		#panel10
 		proxicita = request.form["proxicita"]
@@ -2284,7 +2307,7 @@ def ver(idpaciente):
 	meses=meses, usolen=usolen, enfermedades=enfermedades, nervos=nervos, mms=mms, numeros=numeros, 
 	relva=relva, tipolen=tipolen, materiallen=materiallen, filtrolen=filtrolen, colorlen=colorlen,
 	dataojo=dataojo, dataametropia=dataametropia, lentedetalladolen=lentedetalladolen, haynew=haynew, 
-	ingresconsultas=ingresconsultas, conteo=conteo, listconsultas=listconsultas, new_date=new_date, new_date1=new_date1)
+	ingresconsultas=ingresconsultas, conteo=conteo, listconsultas=listconsultas, new_date=new_date, new_date1=new_date1, rf1=rf1, rf2=rf2)
 
 @app.route("/crearusuario", methods=['GET', 'POST'])
 def crearusuario():

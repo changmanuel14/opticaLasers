@@ -1182,31 +1182,57 @@
                         <th>A.V.C.C</th>
                     </tr>
                 </thead>
-                    <tr>
-                        <th>Ojo Derecho</th>
-                        <td><input type="text" class="inputtext1" id="rfe1od" name="rfe1od"></td>
-                        <td><input type="number" step="0.01" class="inputtext1" id="rfc1od" name="rfc1od"></td>
-                        <td><input type="number" step="0.01" class="inputtext1" id="rfej1od" name="rfej1od"></td>
-                        <td><input type="number" step="0.01" class="inputtext1" id="rfp1od" name="rfp1od"></td>
-                        <td><input type="text" class="inputtext1" id="rfavcc1od" name="rfavcc1od" list="av" autocomplete="false"></td>
-                    </tr>
-                    <tr>
-                        <th>Ojo Izquierdo</th>
-                        <td><input type="text" class="inputtext1" id="rfe1oi" name="rfe1oi"></td>
-                        <td><input type="number" step="0.01" class="inputtext1" id="rfc1oi" name="rfc1oi"></td>
-                        <td><input type="number" step="0.01" class="inputtext1" id="rfej1oi" name="rfej1oi"></td>
-                        <td><input type="number" step="0.01" class="inputtext1" id="rfp1oi" name="rfp1oi"></td>
-                        <td><input type="text" class="inputtext1" id="rfavcc1oi" name="rfavcc1oi" list="av" autocomplete="false"></td>
-                    </tr>
-                    <tr>
-                        <th>DNP</th>
-                        <td><input type="text" class="inputtext1" id="dnp" name="dnp"></td>
-                        <th>A.D.D.</th>
-                        <td><input type="text" class="inputtext1" id="add11" name="add11"></td>
-                        <td><input type="text" class="inputtext1" id="add22" name="add22"></td>
-                        <td><input type="text" class="inputtext1" id="add33" name="add33" list="av" autocomplete="false"></td>
-                    </tr>
-                </thead>
+                {% if conteo > 1 %}
+                <tr>
+                    <th>Ojo Derecho</th>
+                    <td><input type="text" class="inputtext1" id="rfe1od" name="rfe1od" value="{{rf1[0][0]}}"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfc1od" name="rfc1od" value="{{rf1[0][3]}}"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfej1od" name="rfej1od" value="{{rf1[0][6]}}"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfp1od" name="rfp1od" value="{{rf1[0][9]}}"></td>
+                    <td><input type="text" class="inputtext1" id="rfavcc1od" name="rfavcc1od" list="av" autocomplete="false" value="{{rf1[0][12]}}"></td>
+                </tr>
+                <tr>
+                    <th>Ojo Izquierdo</th>
+                    <td><input type="text" class="inputtext1" id="rfe1oi" name="rfe1oi" value="{{rf1[1][0]}}"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfc1oi" name="rfc1oi" value="{{rf1[1][3]}}"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfej1oi" name="rfej1oi" value="{{rf1[1][6]}}"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfp1oi" name="rfp1oi" value="{{rf1[1][9]}}"></td>
+                    <td><input type="text" class="inputtext1" id="rfavcc1oi" name="rfavcc1oi" list="av" autocomplete="false" value="{{rf1[1][12]}}"></td>
+                </tr>
+                <tr>
+                    <th>DNP</th>
+                    <td><input type="text" class="inputtext1" id="dnp" name="dnp" value="{{rf2[5]}}"></td>
+                    <th>A.D.D.</th>
+                    <td><input type="text" class="inputtext1" id="add11" name="add11" value="{{rf2[15]}}"></td>
+                    <td><input type="text" class="inputtext1" id="add22" name="add22" value="{{rf2[16]}}"></td>
+                    <td><input type="text" class="inputtext1" id="add33" name="add33" list="av" autocomplete="false" value="{{rf2[17]}}"></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <th>Ojo Derecho</th>
+                    <td><input type="text" class="inputtext1" id="rfe1od" name="rfe1od"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfc1od" name="rfc1od"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfej1od" name="rfej1od"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfp1od" name="rfp1od"></td>
+                    <td><input type="text" class="inputtext1" id="rfavcc1od" name="rfavcc1od" list="av" autocomplete="false"></td>
+                </tr>
+                <tr>
+                    <th>Ojo Izquierdo</th>
+                    <td><input type="text" class="inputtext1" id="rfe1oi" name="rfe1oi"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfc1oi" name="rfc1oi"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfej1oi" name="rfej1oi"></td>
+                    <td><input type="number" step="0.01" class="inputtext1" id="rfp1oi" name="rfp1oi"></td>
+                    <td><input type="text" class="inputtext1" id="rfavcc1oi" name="rfavcc1oi" list="av" autocomplete="false"></td>
+                </tr>
+                <tr>
+                    <th>DNP</th>
+                    <td><input type="text" class="inputtext1" id="dnp" name="dnp"></td>
+                    <th>A.D.D.</th>
+                    <td><input type="text" class="inputtext1" id="add11" name="add11"></td>
+                    <td><input type="text" class="inputtext1" id="add22" name="add22"></td>
+                    <td><input type="text" class="inputtext1" id="add33" name="add33" list="av" autocomplete="false"></td>
+                </tr>
+                {% endif %}
             </table><br><br>  
             <div id="distanciacercana" style="display: none">
                 <h3>Fórmula para Distancia Cercana</h3>
